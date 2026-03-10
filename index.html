@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brambleton Home — Maintenance Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --soil: #3d2b1f;
+    --bark: #6b4c35;
+    --clay: #c4855a;
+    --straw: #e8d5a3;
+    --sage: #7a9e7e;
+    --slate: #4a6274;
+    --sky: #b8cdd9;
+    --cream: #faf6ef;
+    --ink: #1e1a16;
+    --warn: #c4573a;
+    --cool: #4a8fa3;
+    --mid: #8b7355;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--soil);
+    color: var(--straw);
+    padding: 2.5rem 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 20px,
+      rgba(255,255,255,0.015) 20px,
+      rgba(255,255,255,0.015) 40px
+    );
+  }
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.4rem;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    position: relative;
+  }
+  header h1 span {
+    color: var(--clay);
+    font-style: italic;
+  }
+  .header-meta {
+    margin-top: 0.6rem;
+    font-size: 0.8rem;
+    font-family: 'DM Mono', monospace;
+    opacity: 0.6;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    position: relative;
+  }
+  .badges {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    position: relative;
+  }
+  .badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    padding: 0.25rem 0.7rem;
+    border-radius: 2px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .badge-clay { background: var(--clay); color: white; }
+  .badge-sage { background: var(--sage); color: white; }
+  .badge-slate { background: var(--slate); color: white; }
+
+  /* NAV */
+  nav {
+    background: var(--ink);
+    padding: 0 2rem;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  nav a {
+    color: rgba(255,255,255,0.55);
+    text-decoration: none;
+    padding: 0.85rem 1.1rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: 'DM Mono', monospace;
+    white-space: nowrap;
+    transition: color 0.15s, border-bottom 0.15s;
+    border-bottom: 2px solid transparent;
+  }
+  nav a:hover, nav a.active {
+    color: var(--clay);
+    border-bottom-color: var(--clay);
+  }
+
+  /* SOIL TEMP BANNER */
+  .soil-banner {
+    background: linear-gradient(135deg, var(--bark), var(--mid));
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+  }
+  .soil-banner strong {
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+  }
+  .temp-scale {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .temp-item {
+    background: rgba(255,255,255,0.12);
+    padding: 0.3rem 0.7rem;
+    border-radius: 2px;
+    font-size: 0.72rem;
+  }
+  .temp-item span { color: var(--straw); font-weight: 600; }
+
+  /* MAIN LAYOUT */
+  main { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+
+  /* SECTION HEADERS */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--clay);
+    margin-bottom: 0.4rem;
+  }
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem;
+    color: var(--soil);
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+  }
+
+  /* CALENDAR GRID */
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1px;
+    background: #d4c5b0;
+    border: 1px solid #d4c5b0;
+    margin-bottom: 3rem;
+  }
+  .month-card {
+    background: var(--cream);
+    padding: 1.2rem;
+    transition: background 0.15s;
+  }
+  .month-card:hover { background: #f5efe4; }
+  .month-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--soil);
+    margin-bottom: 0.2rem;
+  }
+  .month-season {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--clay);
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e0d4c0;
+  }
+  .task-list { list-style: none; }
+  .task-list li {
+    font-size: 0.82rem;
+    padding: 0.22rem 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.4rem;
+    line-height: 1.4;
+  }
+  .task-list li::before {
+    content: '—';
+    color: var(--clay);
+    flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    margin-top: 0.05rem;
+  }
+  .task-list li.critical {
+    color: var(--warn);
+    font-weight: 500;
+  }
+  .task-list li.critical::before { content: '!'; font-weight: 700; }
+
+  /* SEASON COLORS */
+  .season-winter .month-season { color: var(--slate); }
+  .season-spring .month-season { color: var(--sage); }
+  .season-summer .month-season { color: var(--warn); }
+  .season-fall .month-season { color: var(--bark); }
+
+  /* PRODUCT TABLES */
+  .product-section { margin-bottom: 3rem; }
+  .product-block {
+    border: 1px solid #d4c5b0;
+    margin-bottom: 1rem;
+    overflow: hidden;
+  }
+  .product-header {
+    background: var(--soil);
+    color: var(--straw);
+    padding: 0.8rem 1.2rem;
+    font-family: 'DM Serif Display', serif;
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+  }
+  .product-header .timing {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--clay);
+    letter-spacing: 0.08em;
+  }
+  .product-body { padding: 1.2rem; }
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+  }
+  .product-card {
+    border: 1px solid #e0d4c0;
+    padding: 0.9rem;
+    background: white;
+  }
+  .product-card .p-name {
+    font-weight: 600;
+    font-size: 0.88rem;
+    margin-bottom: 0.1rem;
+  }
+  .product-card .p-npk {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--sage);
+    margin-bottom: 0.3rem;
+  }
+  .product-card .p-where {
+    font-size: 0.75rem;
+    color: var(--mid);
+  }
+  .notes-box {
+    background: #f5efe4;
+    border-left: 3px solid var(--clay);
+    padding: 0.9rem 1rem;
+    font-size: 0.82rem;
+  }
+  .notes-box .note-row {
+    display: flex;
+    gap: 0.6rem;
+    margin-bottom: 0.3rem;
+  }
+  .notes-box .note-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--clay);
+    min-width: 90px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    flex-shrink: 0;
+    padding-top: 0.05rem;
+  }
+
+  /* HVAC SECTION */
+  .hvac-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .hvac-card {
+    border: 1px solid #d4c5b0;
+    overflow: hidden;
+  }
+  .hvac-card-header {
+    padding: 0.7rem 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: white;
+  }
+  .hdr-heat { background: var(--bark); }
+  .hdr-cool { background: var(--slate); }
+  .hdr-filter { background: var(--soil); }
+  .hdr-humid { background: var(--sage); }
+  .hvac-card-body {
+    padding: 1rem;
+    background: white;
+    font-size: 0.83rem;
+  }
+  .hvac-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid #f0e8de;
+  }
+  .hvac-row:last-child { border-bottom: none; }
+  .hvac-row .label { color: var(--mid); font-size: 0.78rem; }
+  .hvac-row .val {
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    color: var(--soil);
+  }
+  .hvac-row .val.red { color: var(--warn); }
+  .hvac-row .val.green { color: var(--sage); }
+
+  /* HUMIDITY TABLE */
+  .humidity-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.83rem;
+    margin-bottom: 1rem;
+  }
+  .humidity-table th {
+    background: var(--soil);
+    color: var(--straw);
+    padding: 0.6rem 1rem;
+    text-align: left;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+  .humidity-table td {
+    padding: 0.55rem 1rem;
+    border-bottom: 1px solid #e0d4c0;
+  }
+  .humidity-table tr:nth-child(even) td { background: #f8f3ec; }
+  .humidity-table .mono { font-family: 'DM Mono', monospace; font-weight: 500; }
+  .humidity-table .note { color: var(--mid); font-size: 0.77rem; }
+
+  /* WINTERIZATION */
+  .winterize-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .wint-card {
+    border: 1px solid #d4c5b0;
+    overflow: hidden;
+  }
+  .wint-card-head {
+    background: var(--bark);
+    color: var(--straw);
+    padding: 0.65rem 1rem;
+    font-family: 'DM Serif Display', serif;
+    font-size: 0.95rem;
+  }
+  .wint-card-body {
+    background: white;
+    padding: 1rem;
+  }
+  .wint-card-body ol {
+    list-style: none;
+    counter-reset: step;
+  }
+  .wint-card-body ol li {
+    counter-increment: step;
+    font-size: 0.82rem;
+    padding: 0.3rem 0;
+    display: flex;
+    gap: 0.6rem;
+    border-bottom: 1px dotted #e0d4c0;
+  }
+  .wint-card-body ol li:last-child { border: none; }
+  .wint-card-body ol li::before {
+    content: counter(step);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--clay);
+    min-width: 18px;
+    margin-top: 0.05rem;
+  }
+
+  /* CLAY SOIL CALLOUT */
+  .callout {
+    border: 1px solid var(--clay);
+    background: linear-gradient(135deg, #fdf5e8, #f9ede0);
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 2rem;
+  }
+  .callout-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--clay);
+    margin-bottom: 0.6rem;
+  }
+  .callout p { font-size: 0.85rem; color: var(--ink); line-height: 1.6; }
+  .callout ul { margin-top: 0.5rem; padding-left: 1.2rem; font-size: 0.83rem; }
+  .callout ul li { margin-bottom: 0.25rem; }
+
+  /* CRITICAL DATES */
+  .critical-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+  .critical-item {
+    background: var(--warn);
+    color: white;
+    padding: 1rem 1.1rem;
+    display: flex;
+    gap: 0.8rem;
+    align-items: flex-start;
+  }
+  .critical-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    margin-top: 0.1rem;
+    opacity: 0.8;
+    min-width: 70px;
+  }
+  .critical-desc { font-size: 0.85rem; font-weight: 500; line-height: 1.4; }
+
+  /* EDGESGUARD QUICK REF */
+  .edge-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    margin-bottom: 1.5rem;
+  }
+  .edge-table th {
+    background: var(--bark);
+    color: var(--straw);
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 400;
+  }
+  .edge-table td {
+    padding: 0.45rem 0.8rem;
+    border-bottom: 1px solid #e0d4c0;
+  }
+  .edge-table tr:nth-child(even) td { background: #f8f3ec; }
+  .edge-table .mono { font-family: 'DM Mono', monospace; font-weight: 600; color: var(--soil); }
+
+  /* TABS */
+  .tab-nav {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid #d4c5b0;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    padding: 0.7rem 1.3rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    color: var(--mid);
+    white-space: nowrap;
+    margin-bottom: -2px;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .tab-btn.active {
+    color: var(--soil);
+    border-bottom-color: var(--soil);
+    font-weight: 500;
+  }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* FOOTER */
+  footer {
+    background: var(--soil);
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    margin-top: 3rem;
+  }
+  footer span { color: var(--clay); }
+
+  /* PRINT */
+  @media print {
+    nav, .tab-nav, header::before { display: none; }
+    .tab-content { display: block !important; }
+    body { font-size: 12px; }
+    .calendar-grid { grid-template-columns: repeat(4, 1fr); }
+    header { background: var(--soil) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.7rem; }
+    main { padding: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-meta">Brambleton, VA — Loudoun County</div>
+  <h1>Home Maintenance <span>Reference</span></h1>
+  <div class="badges">
+    <span class="badge badge-clay">Zone 7a</span>
+    <span class="badge badge-sage">Clay Soil</span>
+    <span class="badge badge-slate">Humid Sub-Tropical</span>
+    <span class="badge badge-clay">5,445 sq ft Lawn</span>
+  </div>
+</header>
+
+<nav>
+  <a href="#" class="active" onclick="showTab('calendar',this)">Calendar</a>
+  <a href="#" onclick="showTab('lawn',this)">Lawn</a>
+  <a href="#" onclick="showTab('hvac',this)">HVAC</a>
+  <a href="#" onclick="showTab('winterize',this)">Winterize</a>
+  <a href="#" onclick="showTab('critical',this)">Critical Dates</a>
+  <a href="#" onclick="showTab('edgeguard',this)">EdgeGuard Ref</a>
+</nav>
+
+<div class="soil-banner">
+  <strong>Loudoun Co. Soil Temp Triggers</strong>
+  <div class="temp-scale">
+    <div class="temp-item">Pre-emergent: <span>55°F</span> (3 days)</div>
+    <div class="temp-item">Overseeding: <span>50-65°F</span></div>
+    <div class="temp-item">Aerate: <span>&lt;70°F air</span></div>
+    <div class="temp-item">Irrigation off: <span>40°F nights</span></div>
+    <div class="temp-item">Humidifier on: <span>&lt;35°F outdoor</span></div>
+  </div>
+</div>
+
+<main>
+
+<!-- CALENDAR TAB -->
+<div id="tab-calendar" class="tab-content active">
+  <p class="section-label">Annual Schedule</p>
+  <h2>Monthly Tasks</h2>
+
+  <div class="callout">
+    <div class="callout-title">Clay Soil Discipline — Read Before You Dig</div>
+    <p>Loudoun County clay drains slowly and compacts under foot traffic. Every lawn decision must account for this. Applying fertilizer to waterlogged clay causes runoff, not absorption. Aeration is not optional — it is the annual reset that makes everything else work.</p>
+    <ul>
+      <li>Never apply fertilizer to saturated or frozen ground</li>
+      <li>Water deeply, infrequently — clay holds moisture longer than you think</li>
+      <li>Aerate in fall when soil is moist but not wet; spring aeration breaks clay hardpan before summer heat</li>
+      <li>Mow at 3.5–4" in summer — taller grass shades clay surface, reducing crack-and-bake</li>
+    </ul>
+  </div>
+
+  <div class="calendar-grid">
+
+    <div class="month-card season-winter">
+      <div class="month-name">January</div>
+      <div class="month-season">Deep Winter</div>
+      <ul class="task-list">
+        <li>Deep clean and organize interior spaces</li>
+        <li>Check basement for leaks and moisture intrusion</li>
+        <li>Service snow equipment and inspect blades</li>
+        <li>Replace HVAC filter (every 90 days)</li>
+        <li>Plan the year's projects and schedule contractors</li>
+        <li>Deer spray: 1st and 15th</li>
+        <li>Monitor basement pipes for freeze risk</li>
+        <li class="critical">Interior humidity: 30-35% RH</li>
+      </ul>
+    </div>
+
+    <div class="month-card season-winter">
+      <div class="month-name">February</div>
+      <div class="month-season">Late Winter</div>
+      <ul class="task-list">
+        <li>Clean refrigerator coils and check seals</li>
+        <li>Check sump pump; pour water to test float</li>
+        <li>Sharpen mower blades (before season)</li>
+        <li>Prune fruit trees late month while dormant</li>
+        <li>Schedule AC service before spring rush</li>
+        <li>Deer spray: 1st and 15th</li>
+        <li>Prune crepe myrtles late month — not before</li>
+        <li>Cherry tree dormant oil spray (before bud break)</li>
+      </ul>
+    </div>
+
+    <div class="month-card season-spring">
+      <div class="month-name">March</div>
+      <div class="month-season">Early Spring</div>
+      <ul class="task-list">
+        <li>Deep clean carpets after winter</li>
+        <li>Inspect roof for winter damage (binoculars)</li>
+        <li>Clean gutters; check downspout extensions</li>
+        <li>Prune trees and shrubs (before new growth)</li>
+        <li>Test smoke and CO detectors; replace batteries</li>
+        <li>Deer spray: 1st and 15th</li>
+        <li>Fertilize cherry tree and holly</li>
+        <li>Light fertilizer for Japanese maple</li>
+        <li class="critical">March 15: Pre-emergent before soil hits 55°F</li>
+      </ul>
+    </div>
+
+    <div class="month-card season-spring">
+      <div class="month-name">April</div>
+      <div class="month-season">Mid-Spring</div>
+      <ul class="task-list">
+        <li>First lawn mowing at 3" height</li>
+        <li>Apply crabgrass preventer if soil not yet 55°F</li>
+        <li>Power wash deck and patio surfaces</li>
+        <li>Start sprinkler system — inspect heads</li>
+        <li>Clean AC condenser coils and fins</li>
+        <li>Deer spray: 1st and 15th</li>
+        <li class="critical">April 1: Install lanternfly sticky bands</li>
+        <li>Switch humidifier off; dehumidifier mode coming</li>
+      </ul>
+    </div>
+
+    <div class="month-card season-spring">
+      <div class="month-name">May</div>
+      <div class="month-season">Late Spring</div>
+      <ul class="task-list">
+        <li class="critical">May 1: Spring fertilizer application</li>
+        <li>Mulch flower beds (2–3" depth, keep off stems)</li>
+        <li>Plant annuals after last frost (~May 10 avg)</li>
+        <li>Inspect and repair deck boards and railings</li>
+        <li>Clean ceiling fans; reverse for summer direction</li>
+        <li>Deer spray: 1st only (last until fall)</li>
+        <li>Mowing height: 3.5" for summer transition</li>
+      </ul>
+    </div>
+
+    <div class="month-card season-summer">
+      <div class="month-name">June</div>
+      <div class="month-season">Early Summer</div>
+      <ul class="task-list">
+        <li>Apply summer fertilizer (slow-release Milorganite)</li>
+        <li>Begin weekly mowing at 4" height</li>
+        <li>Water lawn deeply 1–2x/week (clay holds well)</li>
+        <li>Test GFCI outlets throughout home</li>
+        <li>Replace HVAC filter</li>
+        <li class="critical">Dehumidifier on: target 45-50% RH</li>
+        <li>Check sump pump before heavy rain season</li>
+      </ul>
+    </div>
+
+    <div class="month-card season-summer">
+      <div class="month-name">July</div>
+      <div class="month-season">Mid-Summer</div>
+      <ul class="task-list">
+        <li class="critical">Apply grub control (July 4th window)</li>
+        <li>Monitor lawn for pest pressure and disease</li>
+        <li>Prune summer-blooming shrubs after bloom</li>
+        <li>Check AC condensate drain line — clear if needed</li>
+        <li>Paint or stain fence if conditions allow</li>
+        <li>Keep mowing height at 4" — do not scalp in heat</li>
+        <li>Flush water heater sediment</li>
+      </ul>
+    </div>
+
+    <div class="month-card season-summer">
+      <div class="month-name">August</div>
+      <div class="month-season">Late Summer</div>
+      <ul class="task-list">
+        <li>Late summer fertilizer — lighter application</li>
+        <li>Overseed thin areas lightly (very early August)</li>
+        <li>Trim trees and shrubs away from house</li>
+        <li>Edge walkways and driveway borders</li>
+        <li>Inspect irrigation heads; fix before fall use</li>
+        <li class="critical">Begin planning fall renovation schedule</li>
+        <li>Check basement dehumidifier — empty or auto-drain?</li>
+      </ul>
+    </div>
+
+    <div class="month-card season-fall">
+      <div class="month-name">September</div>
+      <div class="month-season">Early Fall — Critical Month</div>
+      <ul class="task-list">
+        <li class="critical">Sept 1–15: Aerate + overseed window opens</li>
+        <li class="critical">Sept 15: Fall fertilizer — most important application</li>
+        <li>Plant fall bulbs for spring color</li>
+        <li>Schedule heating system service before October</li>
+        <li>Clean chimney if wood-burning fireplace used</li>
+        <li>Resume deer spray: 1st and 15th</li>
+        <li class="critical">Humidifier: standby — will activate when temps drop</li>
+      </ul>
+    </div>
+
+    <div class="month-card season-fall">
+      <div class="month-name">October</div>
+      <div class="month-season">Mid-Fall</div>
+      <ul class="task-list">
+        <li>Winterizer fertilizer application</li>
+        <li>Rake leaves regularly — clay smothers under leaf mats</li>
+        <li>Aerate lawn if not done in September</li>
+        <li class="critical">Oct 15: Winterize outdoor faucets before freeze</li>
+        <li class="critical">Oct 15: Blow out sprinkler system</li>
+        <li>Deer spray: 1st and 15th</li>
+        <li>Fall roof inspection with binoculars</li>
+        <li>Extend downspouts 6 ft from foundation</li>
+        <li>Check basement humidity levels</li>
+      </ul>
+    </div>
+
+    <div class="month-card season-fall">
+      <div class="month-name">November</div>
+      <div class="month-season">Late Fall</div>
+      <ul class="task-list">
+        <li class="critical">Final fescue winterizer: 34 lbs Nov 1</li>
+        <li>Final leaf cleanup before ground freeze</li>
+        <li>Last mow at 2.5" height to prevent snow mold</li>
+        <li>Confirm irrigation system is blown out</li>
+        <li>Store outdoor furniture and cushions</li>
+        <li>Clean gutters after leaves drop</li>
+        <li>Deer spray: 1st and 15th</li>
+        <li>Wrap young cherry trunk for winter</li>
+        <li>Anti-desiccant spray on boxwoods</li>
+        <li class="critical">Turn humidifier ON when outdoor temps below 35°F</li>
+      </ul>
+    </div>
+
+    <div class="month-card season-winter">
+      <div class="month-name">December</div>
+      <div class="month-season">Early Winter</div>
+      <ul class="task-list">
+        <li>Check for drafts at windows and doors</li>
+        <li>Monitor roof for ice dams after storm</li>
+        <li>Replace HVAC filter</li>
+        <li>Review homeowner's insurance policy</li>
+        <li>Check holiday light cords for damage</li>
+        <li>Deer spray: 1st and 15th</li>
+        <li>Prune Japanese maple while dormant (optional)</li>
+        <li class="critical">Interior humidity: 30-35% RH with humidifier</li>
+      </ul>
+    </div>
+
+  </div><!-- /calendar-grid -->
+</div><!-- /tab-calendar -->
+
+
+<!-- LAWN TAB -->
+<div id="tab-lawn" class="tab-content">
+  <p class="section-label">Products & Application</p>
+  <h2>Lawn Program</h2>
+
+  <div class="product-section">
+
+    <div class="product-block">
+      <div class="product-header" onclick="toggleBlock(this)">
+        Pre-Emergent + Spring Fertilizer
+        <span class="timing">Trigger: soil 55°F / Typical: March 15</span>
+      </div>
+      <div class="product-body">
+        <div class="product-grid">
+          <div class="product-card">
+            <div class="p-name">Scotts Halts Crabgrass Preventer</div>
+            <div class="p-npk">32-0-4 — Pendimethalin</div>
+            <div class="p-where">Home Depot</div>
+          </div>
+          <div class="product-card">
+            <div class="p-name">Jonathan Green Crabgrass Preventer</div>
+            <div class="p-npk">15-0-4</div>
+            <div class="p-where">Lowe's</div>
+          </div>
+          <div class="product-card">
+            <div class="p-name">Corn Gluten Meal</div>
+            <div class="p-npk">9-0-0 — Organic option</div>
+            <div class="p-where">Amazon</div>
+          </div>
+        </div>
+        <div class="notes-box">
+          <div class="note-row"><span class="note-label">Rate</span>1 lb nitrogen per 1,000 sq ft → 27 lbs total (5,445 sq ft)</div>
+          <div class="note-row"><span class="note-label">Timing</span>Before soil hits 55°F for 3 consecutive days</div>
+          <div class="note-row"><span class="note-label">Clay note</span>Water in within 48 hours — clay needs moisture to activate barrier</div>
+          <div class="note-row"><span class="note-label">Warning</span>Cannot overseed after pre-emergent — barrier kills all seed germination</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-block">
+      <div class="product-header" onclick="toggleBlock(this)">
+        Late Spring Feeding
+        <span class="timing">May 1</span>
+      </div>
+      <div class="product-body">
+        <div class="product-grid">
+          <div class="product-card">
+            <div class="p-name">Milorganite</div>
+            <div class="p-npk">6-4-0 — Best slow-release + iron</div>
+            <div class="p-where">Home Depot</div>
+          </div>
+          <div class="product-card">
+            <div class="p-name">Lebanon Turf StepUP</div>
+            <div class="p-npk">18-24-12</div>
+            <div class="p-where">Home Depot</div>
+          </div>
+          <div class="product-card">
+            <div class="p-name">Espoma Organic Lawn Food</div>
+            <div class="p-npk">9-0-0</div>
+            <div class="p-where">Lowe's</div>
+          </div>
+        </div>
+        <div class="notes-box">
+          <div class="note-row"><span class="note-label">Why Milo</span>Slow 10-week release, iron content improves color without surge growth</div>
+          <div class="note-row"><span class="note-label">Clay note</span>Slow-release is ideal — clay warms slowly, fast-release can burn before uptake</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-block">
+      <div class="product-header" onclick="toggleBlock(this)">
+        Fall Fertilizer — Most Critical Applications
+        <span class="timing">Sept 15 + Nov 1</span>
+      </div>
+      <div class="product-body">
+        <div class="product-grid">
+          <div class="product-card">
+            <div class="p-name">Jonathan Green Winter Survival</div>
+            <div class="p-npk">10-0-20 — High potassium</div>
+            <div class="p-where">Amazon</div>
+          </div>
+          <div class="product-card">
+            <div class="p-name">Lebanon Turf Fall Winterizer</div>
+            <div class="p-npk">24-0-12</div>
+            <div class="p-where">Home Depot</div>
+          </div>
+          <div class="product-card">
+            <div class="p-name">Scotts WinterGuard</div>
+            <div class="p-npk">32-0-10</div>
+            <div class="p-where">Home Depot</div>
+          </div>
+          <div class="product-card">
+            <div class="p-name">Purely Organic Lawn Food</div>
+            <div class="p-npk">10-0-2 — Organic option</div>
+            <div class="p-where">Lowe's</div>
+          </div>
+        </div>
+        <div class="notes-box">
+          <div class="note-row"><span class="note-label">Why critical</span>Builds root carbohydrate reserves for winter and spring green-up</div>
+          <div class="note-row"><span class="note-label">Rate</span>1.5 lbs nitrogen per 1,000 sq ft — heaviest application of the year</div>
+          <div class="note-row"><span class="note-label">Two apps</span>Sept 15 and Nov 1 — do not skip the November application</div>
+          <div class="note-row"><span class="note-label">Clay note</span>Apply to dry or slightly moist clay — avoid after heavy rain when ground is saturated</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-block">
+      <div class="product-header" onclick="toggleBlock(this)">
+        Overseeding Program
+        <span class="timing">Sept 1–15</span>
+      </div>
+      <div class="product-body">
+        <div class="product-grid">
+          <div class="product-card">
+            <div class="p-name">Turf-Type Tall Fescue Blend</div>
+            <div class="p-npk">Seed blend — TTTF</div>
+            <div class="p-where">Seed Superstore / SeedRanch</div>
+          </div>
+          <div class="product-card">
+            <div class="p-name">Starter Fertilizer</div>
+            <div class="p-npk">18-24-12 — High phosphorus</div>
+            <div class="p-where">SeedRanch</div>
+          </div>
+          <div class="product-card">
+            <div class="p-name">Penn Mulch Seed Cover</div>
+            <div class="p-npk">Straw mulch pellets</div>
+            <div class="p-where">Home Depot</div>
+          </div>
+        </div>
+        <div class="notes-box">
+          <div class="note-row"><span class="note-label">Seed rate</span>27 lbs total (5 lbs per 1,000 sq ft)</div>
+          <div class="note-row"><span class="note-label">Process</span>Aerate → seed → starter fertilizer → light Penn Mulch cover</div>
+          <div class="note-row"><span class="note-label">Clay note</span>Aeration is non-negotiable before overseeding into clay — seed must contact mineral soil, not thatch</div>
+          <div class="note-row"><span class="note-label">Watering</span>Keep seed moist: light watering 2–3x daily until germination (10–14 days), then taper</div>
+          <div class="note-row"><span class="note-label">Mow timing</span>First mow at 3" after new grass reaches 4" — do not wait longer</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-block">
+      <div class="product-header" onclick="toggleBlock(this)">
+        Weed Control — Post-Emergent
+        <span class="timing">May–September, temps 60-85°F</span>
+      </div>
+      <div class="product-body">
+        <div class="product-grid">
+          <div class="product-card">
+            <div class="p-name">Compare-N-Save 3-Way Herbicide</div>
+            <div class="p-npk">Broadleaf killer — concentrate</div>
+            <div class="p-where">Amazon</div>
+          </div>
+          <div class="product-card">
+            <div class="p-name">Tenacity Herbicide</div>
+            <div class="p-npk">Safe for overseeding zones</div>
+            <div class="p-where">DoMyOwn</div>
+          </div>
+          <div class="product-card">
+            <div class="p-name">Ortho Weed-B-Gone</div>
+            <div class="p-npk">Ready-to-use</div>
+            <div class="p-where">Home Depot</div>
+          </div>
+        </div>
+        <div class="notes-box">
+          <div class="note-row"><span class="note-label">Mix rate</span>1 oz concentrate per gallon covers 1,000 sq ft</div>
+          <div class="note-row"><span class="note-label">Targets</span>Dandelion, clover, plantain, wild violet</div>
+          <div class="note-row"><span class="note-label">Tenacity tip</span>Can apply during overseeding — only herbicide that won't kill germinating fescue</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-block">
+      <div class="product-header" onclick="toggleBlock(this)">
+        Grub Control
+        <span class="timing">July — preventive window</span>
+      </div>
+      <div class="product-body">
+        <div class="product-grid">
+          <div class="product-card">
+            <div class="p-name">Scotts GrubEx</div>
+            <div class="p-npk">Chlorantraniliprole — preventive</div>
+            <div class="p-where">Home Depot</div>
+          </div>
+          <div class="product-card">
+            <div class="p-name">Bayer 24-Hour Grub Killer</div>
+            <div class="p-npk">Trichlorfon — curative</div>
+            <div class="p-where">Home Depot</div>
+          </div>
+        </div>
+        <div class="notes-box">
+          <div class="note-row"><span class="note-label">Strategy</span>Preventive (GrubEx) applied July 4th window is superior to curative treatments</div>
+          <div class="note-row"><span class="note-label">Clay note</span>Water in immediately after application — clay surface can block penetration if dry</div>
+          <div class="note-row"><span class="note-label">Signs</span>Spongy turf, raccoon/skunk digging, brown patches that lift like carpet</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-block">
+      <div class="product-header" onclick="toggleBlock(this)">
+        Deer Repellent
+        <span class="timing">Sept 1 – May 1: every 2 weeks</span>
+      </div>
+      <div class="product-body">
+        <div class="product-grid">
+          <div class="product-card">
+            <div class="p-name">Liquid Fence Deer &amp; Rabbit</div>
+            <div class="p-npk">Concentrate</div>
+            <div class="p-where">Amazon</div>
+          </div>
+          <div class="product-card">
+            <div class="p-name">Bobbex Deer Repellent</div>
+            <div class="p-npk">Top-rated effectiveness</div>
+            <div class="p-where">Home Depot</div>
+          </div>
+        </div>
+        <div class="notes-box">
+          <div class="note-row"><span class="note-label">Mix</span>1:8 concentrate to water (16 oz per gallon)</div>
+          <div class="note-row"><span class="note-label">Coverage</span>1 gallon covers ~500 sq ft of foliage</div>
+          <div class="note-row"><span class="note-label">Schedule</span>1st and 15th of each month, Sept through May. May 1 only — then skip until September.</div>
+          <div class="note-row"><span class="note-label">Rotation</span>Alternate between two products to prevent habituation</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="section-label">Mowing Reference</p>
+  <h2>Tall Fescue Heights — Zone 7a</h2>
+  <table class="humidity-table">
+    <thead>
+      <tr><th>Period</th><th>Height</th><th>Reason</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Early Spring (Mar–Apr)</td><td class="mono">3.0"</td><td>Promotes tillering and lateral spread</td></tr>
+      <tr><td>Late Spring (May)</td><td class="mono">3.5"</td><td>Transition to summer shade mode</td></tr>
+      <tr><td>Summer (Jun–Aug)</td><td class="mono">4.0"</td><td class="note">Critical — shades clay surface, reduces heat stress, conserves moisture</td></tr>
+      <tr><td>Fall (Sept–Oct)</td><td class="mono">3.0"</td><td>Normal growth period, aeration prep</td></tr>
+      <tr><td>Final Mow (Nov)</td><td class="mono">2.5"</td><td>Prevents snow mold over winter — do not leave tall</td></tr>
+    </tbody>
+  </table>
+</div><!-- /tab-lawn -->
+
+
+<!-- HVAC TAB -->
+<div id="tab-hvac" class="tab-content">
+  <p class="section-label">Seasonal Transitions</p>
+  <h2>HVAC + Humidity Schedule</h2>
+
+  <div class="hvac-grid">
+
+    <div class="hvac-card">
+      <div class="hvac-card-header hdr-heat">Heating Season</div>
+      <div class="hvac-card-body">
+        <div class="hvac-row"><span class="label">System on</span><span class="val">When outdoor temps drop below 55°F consistently</span></div>
+        <div class="hvac-row"><span class="label">Typical start</span><span class="val">Mid-October</span></div>
+        <div class="hvac-row"><span class="label">Service</span><span class="val">September (before need)</span></div>
+        <div class="hvac-row"><span class="label">Filter change</span><span class="val red">Jan, Apr, Jul, Oct (quarterly)</span></div>
+        <div class="hvac-row"><span class="label">Humidifier on</span><span class="val">Outdoor temps below 35°F</span></div>
+        <div class="hvac-row"><span class="label">Humidifier setting</span><span class="val green">35% RH in winter</span></div>
+      </div>
+    </div>
+
+    <div class="hvac-card">
+      <div class="hvac-card-header hdr-cool">Cooling Season</div>
+      <div class="hvac-card-body">
+        <div class="hvac-row"><span class="label">System on</span><span class="val">When outdoor temps consistently above 65°F</span></div>
+        <div class="hvac-row"><span class="label">Typical start</span><span class="val">Late April / Early May</span></div>
+        <div class="hvac-row"><span class="label">AC service</span><span class="val">February–March (before demand)</span></div>
+        <div class="hvac-row"><span class="label">Condenser clean</span><span class="val">April — before first run</span></div>
+        <div class="hvac-row"><span class="label">Condensate drain</span><span class="val red">Check monthly in season</span></div>
+        <div class="hvac-row"><span class="label">Dehumidifier on</span><span class="val">When outdoor dew point above 55°F</span></div>
+      </div>
+    </div>
+
+    <div class="hvac-card">
+      <div class="hvac-card-header hdr-humid">Humidifier Protocol</div>
+      <div class="hvac-card-body">
+        <div class="hvac-row"><span class="label">Activate when</span><span class="val">Outdoor temp below 35°F</span></div>
+        <div class="hvac-row"><span class="label">Deactivate when</span><span class="val">Consistent temps above 45°F</span></div>
+        <div class="hvac-row"><span class="label">Typical on</span><span class="val">November (varies year to year)</span></div>
+        <div class="hvac-row"><span class="label">Typical off</span><span class="val">March–April</span></div>
+        <div class="hvac-row"><span class="label">Winter target</span><span class="val green">30–38% RH</span></div>
+        <div class="hvac-row"><span class="label">Why it matters</span><span class="val">Dry winters cause wood floor gaps, static, respiratory irritation</span></div>
+      </div>
+    </div>
+
+    <div class="hvac-card">
+      <div class="hvac-card-header" style="background:var(--mid)">Dehumidifier Protocol</div>
+      <div class="hvac-card-body">
+        <div class="hvac-row"><span class="label">Activate when</span><span class="val">Outdoor dew point consistently above 55°F</span></div>
+        <div class="hvac-row"><span class="label">Typical on</span><span class="val">Late May to early June</span></div>
+        <div class="hvac-row"><span class="label">Typical off</span><span class="val">October — when outdoor humidity drops</span></div>
+        <div class="hvac-row"><span class="label">Target RH</span><span class="val green">45–50% RH in summer</span></div>
+        <div class="hvac-row"><span class="label">Basement target</span><span class="val green">50% RH max (mold threshold)</span></div>
+        <div class="hvac-row"><span class="label">Drain check</span><span class="val red">Monthly — auto-drain or empty bucket</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="section-label">Interior Humidity Targets by Season</p>
+  <h2>Humidity Reference</h2>
+  <table class="humidity-table">
+    <thead>
+      <tr><th>Season</th><th>Months</th><th>Target RH</th><th>Equipment</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Deep Winter</td>
+        <td>Dec–Feb</td>
+        <td class="mono">30–35%</td>
+        <td>Humidifier ON</td>
+        <td class="note">Below 30% causes wood gaps, cracked trim, static; above 35% risks condensation on cold windows</td>
+      </tr>
+      <tr>
+        <td>Late Winter</td>
+        <td>Mar</td>
+        <td class="mono">35–40%</td>
+        <td>Humidifier ON / tapering</td>
+        <td class="note">Monitor outdoor temps; turn off when consistently above 45°F outside</td>
+      </tr>
+      <tr>
+        <td>Spring Transition</td>
+        <td>Apr–May</td>
+        <td class="mono">40–50%</td>
+        <td>Neither / passive</td>
+        <td class="note">Open windows when outdoor RH is lower than indoor; humidity self-manages during mild weather</td>
+      </tr>
+      <tr>
+        <td>Humid Summer</td>
+        <td>Jun–Sep</td>
+        <td class="mono">45–50%</td>
+        <td>Dehumidifier ON</td>
+        <td class="note">Loudoun County summers are humid sub-tropical; uncontrolled indoor humidity promotes mold in 24–48 hrs above 60%</td>
+      </tr>
+      <tr>
+        <td>Fall Transition</td>
+        <td>Oct–Nov</td>
+        <td class="mono">40–45%</td>
+        <td>Dehumidifier off / passive</td>
+        <td class="note">Monitor basement especially — clay soil stays moist longer, pushing vapor through slab</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="callout-title">Clay Soil and Basement Humidity — The Hidden Link</div>
+    <p>Clay soil surrounding Brambleton foundations stays moisture-saturated much longer than sandy or loamy soils. In summer, this creates consistent vapor pressure against foundation walls and slabs. The symptom is a basement that stays humid even when the rest of the house is controlled. Dehumidifier placement matters: position it to draw air from the most problematic corner, typically opposite the sump pump.</p>
+  </div>
+</div><!-- /tab-hvac -->
+
+
+<!-- WINTERIZE TAB -->
+<div id="tab-winterize" class="tab-content">
+  <p class="section-label">October–November</p>
+  <h2>Winterization Procedures</h2>
+
+  <div class="winterize-grid">
+
+    <div class="wint-card">
+      <div class="wint-card-head">Irrigation System Blowout</div>
+      <div class="wint-card-body">
+        <ol>
+          <li>Schedule professional blowout by Oct 15 (before first hard freeze — Loudoun avg Nov 5)</li>
+          <li>Locate and mark all zone valves and backflow preventer</li>
+          <li>Turn off water supply to irrigation system at main shutoff</li>
+          <li>Connect compressed air to blowout port (min 20 CFM at 50 PSI)</li>
+          <li>Open each zone manually, blow 30–60 seconds until no water exits heads</li>
+          <li>Repeat each zone 2–3 passes until completely dry</li>
+          <li>Insulate backflow preventer if exposed above ground</li>
+          <li>Set controller to OFF or "rain" mode for winter</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="wint-card">
+      <div class="wint-card-head">Outdoor Faucets / Hose Bibs</div>
+      <div class="wint-card-body">
+        <ol>
+          <li>Disconnect all garden hoses before Oct 15</li>
+          <li>Locate interior shutoff valve for each exterior faucet</li>
+          <li>Close interior shutoff value</li>
+          <li>Open exterior faucet to drain remaining water</li>
+          <li>Leave exterior faucet slightly open overnight to confirm drainage</li>
+          <li>Inspect for frost-free sillcock operation — if not frost-free, must shutoff</li>
+          <li>Install foam faucet covers as secondary protection</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="wint-card">
+      <div class="wint-card-head">Gutters — Fall Sequence</div>
+      <div class="wint-card-body">
+        <ol>
+          <li>First clean: after majority of leaves fall (late Oct / early Nov)</li>
+          <li>Second clean: after all leaves down (mid-to-late Nov)</li>
+          <li>Check that downspouts are clear — run hose from top</li>
+          <li>Verify downspout extensions route water 6 ft from foundation</li>
+          <li>Inspect for gutter sag, separated joints, or failed caulk</li>
+          <li>Check fascia behind gutters for rot if gutters hold water</li>
+          <li>Look for granules in gutters — indicates shingle wear</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="wint-card">
+      <div class="wint-card-head">Plumbing Winterization</div>
+      <div class="wint-card-body">
+        <ol>
+          <li>Know location of main water shutoff — test it annually</li>
+          <li>Insulate any exposed pipes in unheated spaces (crawl, garage)</li>
+          <li>Keep garage doors closed when temps drop below 28°F</li>
+          <li>If traveling: set thermostat no lower than 55°F</li>
+          <li>Leave cabinet doors under sinks on exterior walls open in extreme cold</li>
+          <li>Know how to shut off water at meter — tape the tool near it</li>
+          <li>Check sump pump operation before freeze season</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="wint-card">
+      <div class="wint-card-head">Landscape Winterization</div>
+      <div class="wint-card-body">
+        <ol>
+          <li>Wrap young cherry tree trunk with burlap or tree wrap (Nov)</li>
+          <li>Apply anti-desiccant spray to boxwoods and broadleaf evergreens</li>
+          <li>Mulch tender perennials after first frost (3" depth)</li>
+          <li>Cut back ornamental grasses to 6" in late fall</li>
+          <li>Drain and store clay/ceramic pots — they crack if left out</li>
+          <li>Store bird baths or drain and flip</li>
+          <li>Apply deer repellent before first hard freeze (Nov 1 treatment)</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="wint-card">
+      <div class="wint-card-head">Hardiplank Siding — Fall Check</div>
+      <div class="wint-card-body">
+        <ol>
+          <li>Inspect all caulk joints at windows, doors, and trim seams</li>
+          <li>Look for cracks or chips in fiber cement panels</li>
+          <li>Touch up damaged paint with Hardie-approved paint within 180 days</li>
+          <li>Clear any soil or mulch contact with siding base (6" clearance min)</li>
+          <li>Check that weep holes at base of siding are not clogged</li>
+          <li>Note: NO pressure washing — gentle soft brush wash only</li>
+        </ol>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /tab-winterize -->
+
+
+<!-- CRITICAL DATES TAB -->
+<div id="tab-critical" class="tab-content">
+  <p class="section-label">Soil-Temp Triggered — Not Calendar Fixed</p>
+  <h2>Non-Negotiable Dates</h2>
+
+  <div class="callout">
+    <div class="callout-title">How to Use This Section</div>
+    <p>These dates are calibrated to Loudoun County historical averages but are temperature-triggered, not calendar-fixed. In a warm year, pre-emergent may need to go down March 1. In a cold spring, March 15 is still safe. Check <strong>va.climateoffice.org</strong> or <strong>greencastonline.com</strong> for real-time Loudoun County soil temps. The dates here are your baseline; soil temp is your trigger.</p>
+  </div>
+
+  <div class="critical-grid">
+    <div class="critical-item">
+      <div class="critical-date">Mar 1–15</div>
+      <div class="critical-desc">Pre-emergent before soil reaches 55°F — this window closes fast in warm springs</div>
+    </div>
+    <div class="critical-item">
+      <div class="critical-date">Apr 1</div>
+      <div class="critical-desc">Install spotted lanternfly sticky bands on target trees</div>
+    </div>
+    <div class="critical-item">
+      <div class="critical-date">May 1</div>
+      <div class="critical-desc">Spring fertilizer application — Milorganite or equivalent</div>
+    </div>
+    <div class="critical-item">
+      <div class="critical-date">July 4th</div>
+      <div class="critical-desc">Grub control preventive window — GrubEx before grubs hatch and reach turf</div>
+    </div>
+    <div class="critical-item">
+      <div class="critical-date">Sept 1–15</div>
+      <div class="critical-desc">Aerate + overseed window. Soil must be below 70°F. Do not delay — germination window closes fast</div>
+    </div>
+    <div class="critical-item">
+      <div class="critical-date">Sept 15</div>
+      <div class="critical-desc">Most important fertilizer of the year — fall feeding builds root reserves for winter</div>
+    </div>
+    <div class="critical-item">
+      <div class="critical-date">Oct 15</div>
+      <div class="critical-desc">Winterize irrigation system — before first hard freeze (Loudoun avg first hard freeze Nov 5)</div>
+    </div>
+    <div class="critical-item">
+      <div class="critical-date">Oct 15</div>
+      <div class="critical-desc">Disconnect all garden hoses; close interior shutoff valves on hose bibs</div>
+    </div>
+    <div class="critical-item">
+      <div class="critical-date">Nov 1</div>
+      <div class="critical-desc">Final winterizer fertilizer — 34 lbs for 5,445 sq ft lawn</div>
+    </div>
+    <div class="critical-item">
+      <div class="critical-date">Nov 1</div>
+      <div class="critical-desc">Final deer repellent before ground freezes. Resume spray schedule until May 1</div>
+    </div>
+    <div class="critical-item">
+      <div class="critical-date">Nov (varies)</div>
+      <div class="critical-desc">Turn whole-house humidifier ON when outdoor temps drop consistently below 35°F</div>
+    </div>
+    <div class="critical-item">
+      <div class="critical-date">Final Nov mow</div>
+      <div class="critical-desc">Cut to 2.5" — lower than season height to prevent snow mold matting over winter</div>
+    </div>
+  </div>
+
+  <div class="callout" style="border-color:var(--sage);">
+    <div class="callout-title" style="color:var(--sage);">Loudoun County Climate Context</div>
+    <p>Average first hard freeze: November 5. Average last spring frost: April 15. Average soil temp at 2" depth hits 55°F: late March to mid-April depending on Winter. Loudoun is transitional Zone 7a — winters are genuinely cold compared to zones south, but summers are humid and hot. Your tall fescue thrives in this climate specifically because of fall/winter dormancy. Do not treat it like a southern warm-season lawn.</p>
+  </div>
+</div><!-- /tab-critical -->
+
+
+<!-- EDGEGUARD TAB -->
+<div id="tab-edgeguard" class="tab-content">
+  <p class="section-label">Scotts EdgeGuard Spreader</p>
+  <h2>Quick-Reference Settings</h2>
+
+  <div class="callout">
+    <div class="callout-title">How to Calibrate This Table</div>
+    <p>Settings below are for Scotts EdgeGuard DLX (the standard unit). Your lawn is 5,445 sq ft total. All quantities shown are for the full lawn. Walk at a consistent pace — vary speed and you vary rate. Overlapping on turns adds product; train yourself to cut spreader off on turns.</p>
+  </div>
+
+  <table class="edge-table">
+    <thead>
+      <tr><th>Product</th><th>Application</th><th>Setting</th><th>Qty (full lawn)</th><th>Timing</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Scotts Halts (32-0-4)</td>
+        <td>Pre-emergent</td>
+        <td class="mono">4</td>
+        <td>27 lbs</td>
+        <td>Before soil 55°F</td>
+      </tr>
+      <tr>
+        <td>Jonathan Green CG Preventer (15-0-4)</td>
+        <td>Pre-emergent</td>
+        <td class="mono">4</td>
+        <td>27 lbs</td>
+        <td>Before soil 55°F</td>
+      </tr>
+      <tr>
+        <td>Corn Gluten Meal (9-0-0)</td>
+        <td>Pre-emergent organic</td>
+        <td class="mono">6.5</td>
+        <td>27 lbs</td>
+        <td>Before soil 55°F</td>
+      </tr>
+      <tr>
+        <td>Milorganite (6-4-0)</td>
+        <td>Spring feeding</td>
+        <td class="mono">11.5</td>
+        <td>~36 lbs</td>
+        <td>May 1</td>
+      </tr>
+      <tr>
+        <td>Lebanon StepUP (18-24-12)</td>
+        <td>Spring feeding</td>
+        <td class="mono">5</td>
+        <td>45 lbs</td>
+        <td>May 1</td>
+      </tr>
+      <tr>
+        <td>Espoma Organic (9-0-0)</td>
+        <td>Spring feeding</td>
+        <td class="mono">8</td>
+        <td>45 lbs</td>
+        <td>May 1</td>
+      </tr>
+      <tr>
+        <td>Jonathan Green Winter Survival (10-0-20)</td>
+        <td>Fall fertilizer</td>
+        <td class="mono">6</td>
+        <td>45 lbs</td>
+        <td>Sept 15 + Nov 1</td>
+      </tr>
+      <tr>
+        <td>Lebanon Fall Winterizer (24-0-12)</td>
+        <td>Fall fertilizer</td>
+        <td class="mono">4.5</td>
+        <td>30 lbs</td>
+        <td>Sept 15 + Nov 1</td>
+      </tr>
+      <tr>
+        <td>Scotts WinterGuard (32-0-10)</td>
+        <td>Fall fertilizer</td>
+        <td class="mono">5</td>
+        <td>34 lbs</td>
+        <td>Sept 15 + Nov 1</td>
+      </tr>
+      <tr>
+        <td>Purely Organic (10-0-2)</td>
+        <td>Fall organic</td>
+        <td class="mono">7</td>
+        <td>54 lbs</td>
+        <td>Sept 15 + Nov 1</td>
+      </tr>
+      <tr>
+        <td>TTTF Fescue Seed</td>
+        <td>Overseeding</td>
+        <td class="mono">3.5</td>
+        <td>27 lbs</td>
+        <td>Sept 1–15</td>
+      </tr>
+      <tr>
+        <td>Starter Fertilizer (18-24-12)</td>
+        <td>Post-overseeding</td>
+        <td class="mono">4.5</td>
+        <td>~20 lbs</td>
+        <td>Immediately after seeding</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="callout-title">Application Discipline for Clay Soil</div>
+    <p>Clay soil does not forgive uneven application. Hot spots from overlapping passes or excessive rates can burn turf that has no quick drainage escape. When in doubt, err toward the lower setting and make a second pass if coverage looks thin. Walk at a deliberate, consistent pace — roughly 3 mph. Anything faster reduces coverage; slower adds excess product.</p>
+  </div>
+</div><!-- /tab-edgeguard -->
+
+</main>
+
+<footer>
+  Brambleton, VA — <span>Loudoun County</span> — Zone 7a — Clay Soil — Tall Fescue — 5,445 sq ft<br>
+  Keyed to soil temp triggers, not calendar dates
+</footer>
+
+<script>
+  function showTab(id, link) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    if (link) link.classList.add('active');
+    return false;
+  }
+
+  function toggleBlock(header) {
+    const body = header.nextElementSibling;
+    body.style.display = body.style.display === 'none' ? 'block' : 'none';
+  }
+</script>
+
+</body>
+</html>
