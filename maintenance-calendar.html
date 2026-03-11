@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maintenance Calendar | Brambleton Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --soil-dark: #1a1208;
+    --soil-mid: #2d1f0a;
+    --bark: #3d2b0f;
+    --clay: #8b4513;
+    --clay-light: #a0522d;
+    --moss: #2d4a1e;
+    --grass: #3a5c28;
+    --sage: #6b7c52;
+    --straw: #c8a96e;
+    --cream: #f5eed8;
+    --parchment: #ede3c4;
+    --spring: #4a7c3f;
+    --summer: #b85c00;
+    --fall: #7a3b00;
+    --winter: #2b3a52;
+    --rule: rgba(139, 69, 19, 0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--soil-dark);
+    color: var(--cream);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 20% 50%, rgba(45,31,10,0.8) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(26,18,8,0.9) 0%, transparent 50%);
+  }
+
+  /* NAV */
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(26,18,8,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    height: 56px;
+  }
+  .nav-home {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--straw);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+  .nav-home:hover { opacity: 1; }
+  .nav-sep { color: var(--rule); font-size: 0.9rem; }
+  .nav-current {
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.85rem;
+    color: var(--cream);
+    opacity: 0.6;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 5rem 2rem 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .hero-label {
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--straw);
+    opacity: 0.7;
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--cream);
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.01em;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--straw);
+  }
+  .hero-sub {
+    font-size: 1rem;
+    color: var(--parchment);
+    opacity: 0.65;
+    max-width: 560px;
+    line-height: 1.8;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 2.5rem;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+    flex-wrap: wrap;
+  }
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .meta-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--straw);
+    opacity: 0.6;
+  }
+  .meta-value {
+    font-size: 0.9rem;
+    color: var(--cream);
+    opacity: 0.85;
+  }
+
+  /* HOW TO USE BOX */
+  .how-to-use {
+    max-width: 1100px;
+    margin: 0 auto 3rem;
+    padding: 0 2rem;
+  }
+  .info-box {
+    background: rgba(45,31,10,0.6);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--straw);
+    padding: 1.8rem 2rem;
+    border-radius: 2px;
+  }
+  .info-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--straw);
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.02em;
+  }
+  .info-box p {
+    font-size: 0.9rem;
+    color: var(--parchment);
+    opacity: 0.8;
+    margin-bottom: 0.6rem;
+    line-height: 1.75;
+  }
+  .info-box p:last-child { margin-bottom: 0; }
+
+  /* TRIGGER TABLE */
+  .trigger-section {
+    max-width: 1100px;
+    margin: 0 auto 4rem;
+    padding: 0 2rem;
+  }
+  .section-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--cream);
+    margin-bottom: 0.4rem;
+  }
+  .section-sub {
+    font-size: 0.82rem;
+    color: var(--straw);
+    opacity: 0.65;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  thead th {
+    background: rgba(139,69,19,0.3);
+    color: var(--straw);
+    font-family: 'Source Serif 4', serif;
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.9rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--rule);
+  }
+  tbody tr {
+    border-bottom: 1px solid rgba(139,69,19,0.12);
+    transition: background 0.15s;
+  }
+  tbody tr:hover { background: rgba(200,169,110,0.05); }
+  tbody td {
+    padding: 0.85rem 1rem;
+    color: var(--parchment);
+    opacity: 0.85;
+    vertical-align: top;
+    line-height: 1.65;
+  }
+  tbody td:first-child {
+    color: var(--straw);
+    font-weight: 600;
+    opacity: 1;
+    font-size: 0.83rem;
+  }
+
+  /* SEASON TABS */
+  .seasons {
+    max-width: 1100px;
+    margin: 0 auto 5rem;
+    padding: 0 2rem;
+  }
+  .season-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 0;
+    border-bottom: 1px solid var(--rule);
+    overflow-x: auto;
+  }
+  .season-tab {
+    padding: 0.9rem 1.8rem;
+    border: none;
+    background: transparent;
+    color: var(--parchment);
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    opacity: 0.4;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.2s;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
+  .season-tab:hover { opacity: 0.7; }
+  .season-tab.active { opacity: 1; }
+  .season-tab[data-season="spring"].active { color: #7db86a; border-bottom-color: #7db86a; }
+  .season-tab[data-season="summer"].active { color: #e07b30; border-bottom-color: #e07b30; }
+  .season-tab[data-season="fall"].active { color: #c4873a; border-bottom-color: #c4873a; }
+  .season-tab[data-season="winter"].active { color: #7a9fc0; border-bottom-color: #7a9fc0; }
+
+  .season-panel { display: none; padding-top: 2rem; }
+  .season-panel.active { display: block; }
+
+  .season-banner {
+    padding: 1.2rem 1.6rem;
+    margin-bottom: 1.8rem;
+    border-radius: 2px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    opacity: 0.9;
+  }
+  .season-banner.spring { background: rgba(74,124,63,0.15); border-left: 3px solid #7db86a; color: #a8d494; }
+  .season-banner.summer { background: rgba(184,92,0,0.15); border-left: 3px solid #e07b30; color: #f0a870; }
+  .season-banner.fall   { background: rgba(122,59,0,0.15); border-left: 3px solid #c4873a; color: #dba96a; }
+  .season-banner.winter { background: rgba(43,58,82,0.25); border-left: 3px solid #7a9fc0; color: #9bbcd8; }
+
+  .category-label {
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--straw);
+    opacity: 0.55;
+    margin: 2rem 0 0.8rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .category-label:first-of-type { margin-top: 0; }
+
+  .task-row {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr 1fr 0.9fr;
+    gap: 0;
+    border-bottom: 1px solid rgba(139,69,19,0.1);
+    transition: background 0.15s;
+  }
+  .task-row:hover { background: rgba(200,169,110,0.04); }
+  .task-row.header {
+    background: rgba(139,69,19,0.2);
+    border-bottom: 1px solid var(--rule);
+  }
+  .task-cell {
+    padding: 0.8rem 1rem;
+    font-size: 0.84rem;
+    color: var(--parchment);
+    opacity: 0.82;
+    vertical-align: top;
+    line-height: 1.65;
+  }
+  .task-row.header .task-cell {
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--straw);
+    font-weight: 600;
+    opacity: 0.7;
+    font-family: 'Source Serif 4', serif;
+  }
+  .task-cell:first-child {
+    color: var(--straw);
+    font-weight: 600;
+    opacity: 1;
+    font-size: 0.82rem;
+  }
+  .task-cell.clay-note {
+    font-size: 0.78rem;
+    font-style: italic;
+    opacity: 0.6;
+  }
+  .warning-note {
+    background: rgba(184,92,0,0.1);
+    border-left: 2px solid #e07b30;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.78rem;
+    color: #f0a870;
+    margin: 0.8rem 0 1rem;
+    border-radius: 1px;
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  /* HUMIDITY SECTION */
+  .humidity-section {
+    max-width: 1100px;
+    margin: 0 auto 4rem;
+    padding: 0 2rem;
+  }
+  .humidity-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-top: 1.5rem;
+  }
+  .humidity-card {
+    background: var(--soil-dark);
+    padding: 1.4rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .humidity-season {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .humidity-card.spring .humidity-season { color: #7db86a; }
+  .humidity-card.summer .humidity-season { color: #e07b30; }
+  .humidity-card.fall .humidity-season { color: #c4873a; }
+  .humidity-card.winter .humidity-season { color: #7a9fc0; }
+  .humidity-target {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+    font-weight: 900;
+    color: var(--cream);
+    line-height: 1;
+  }
+  .humidity-target span {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--straw);
+    opacity: 0.6;
+  }
+  .humidity-method {
+    font-size: 0.78rem;
+    color: var(--parchment);
+    opacity: 0.6;
+    line-height: 1.6;
+  }
+
+  /* MASTER QUICK REF */
+  .quick-ref {
+    max-width: 1100px;
+    margin: 0 auto 4rem;
+    padding: 0 2rem;
+  }
+  .quick-ref-grid {
+    display: grid;
+    gap: 0;
+    margin-top: 1.5rem;
+    border: 1px solid var(--rule);
+  }
+  .qr-row {
+    display: grid;
+    grid-template-columns: 2fr 3fr 1fr;
+    border-bottom: 1px solid rgba(139,69,19,0.1);
+    transition: background 0.15s;
+  }
+  .qr-row:last-child { border-bottom: none; }
+  .qr-row:hover { background: rgba(200,169,110,0.04); }
+  .qr-row.qr-header { background: rgba(139,69,19,0.25); border-bottom: 1px solid var(--rule); }
+  .qr-cell {
+    padding: 0.75rem 1rem;
+    font-size: 0.82rem;
+    color: var(--parchment);
+    opacity: 0.8;
+    vertical-align: top;
+    line-height: 1.6;
+  }
+  .qr-row.qr-header .qr-cell {
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--straw);
+    font-weight: 600;
+    opacity: 0.65;
+  }
+  .qr-cell:first-child { color: var(--straw); font-weight: 600; opacity: 1; }
+  .badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 1px;
+    font-weight: 600;
+  }
+  .badge-lawn   { background: rgba(74,124,63,0.2);  color: #7db86a; }
+  .badge-hvac   { background: rgba(43,58,82,0.3);   color: #7a9fc0; }
+  .badge-beds   { background: rgba(107,124,82,0.2); color: #a8b890; }
+  .badge-irr    { background: rgba(139,69,19,0.2);  color: #c4873a; }
+  .badge-plumb  { background: rgba(80,80,100,0.2);  color: #9090c0; }
+
+  /* SITE OBS */
+  .obs-section {
+    max-width: 1100px;
+    margin: 0 auto 4rem;
+    padding: 0 2rem;
+  }
+  .obs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-top: 1.5rem;
+  }
+  .obs-card {
+    background: var(--soil-dark);
+    padding: 1.3rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .obs-area {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--straw);
+  }
+  .obs-finding {
+    font-size: 0.82rem;
+    color: var(--parchment);
+    opacity: 0.72;
+    line-height: 1.65;
+  }
+  .obs-action {
+    font-size: 0.78rem;
+    color: #7db86a;
+    font-style: italic;
+    line-height: 1.6;
+    margin-top: 0.2rem;
+    opacity: 0.85;
+  }
+
+  /* SOIL NOTE */
+  .clay-fundamentals {
+    max-width: 1100px;
+    margin: 0 auto 4rem;
+    padding: 0 2rem;
+  }
+  .clay-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-top: 1.5rem;
+  }
+  .clay-card {
+    background: var(--soil-dark);
+    padding: 1.5rem 1.4rem;
+  }
+  .clay-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--cream);
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.02em;
+  }
+  .clay-card ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .clay-card li {
+    font-size: 0.83rem;
+    color: var(--parchment);
+    opacity: 0.72;
+    line-height: 1.65;
+    padding-left: 0.9rem;
+    position: relative;
+  }
+  .clay-card li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--straw);
+    opacity: 0.5;
+    font-size: 0.75rem;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 2.5rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: gap;
+    gap: 1rem;
+  }
+  footer p {
+    font-size: 0.75rem;
+    color: var(--straw);
+    opacity: 0.45;
+    letter-spacing: 0.05em;
+  }
+  .footer-link {
+    font-size: 0.75rem;
+    color: var(--straw);
+    opacity: 0.4;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: opacity 0.2s;
+  }
+  .footer-link:hover { opacity: 0.75; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .task-row { grid-template-columns: 1fr 1fr; }
+    .task-cell:nth-child(3),
+    .task-cell:nth-child(4),
+    .task-row.header .task-cell:nth-child(3),
+    .task-row.header .task-cell:nth-child(4) { display: none; }
+    .qr-row { grid-template-columns: 1fr 2fr; }
+    .qr-cell:nth-child(3) { display: none; }
+    .clay-grid { grid-template-columns: 1fr; }
+    .hero-meta { gap: 1.5rem; }
+    .season-tab { padding: 0.8rem 1.2rem; font-size: 0.85rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="nav-home" href="/brambleton/">Brambleton Home</a>
+  <span class="nav-sep">›</span>
+  <span class="nav-current">Maintenance Calendar</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-label">Loudoun County, Virginia &nbsp;|&nbsp; Zone 7a</p>
+  <h1>Seasonal <em>Maintenance</em><br>Reference Calendar</h1>
+  <p class="hero-sub">All timing keyed to Loudoun County soil temperatures and observable site conditions, not calendar dates. Clay soil behavior drives every recommendation.</p>
+  <div class="hero-meta">
+    <div class="meta-item">
+      <span class="meta-label">Grass Type</span>
+      <span class="meta-value">Tall Fescue</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Soil</span>
+      <span class="meta-value">Loudoun Series Clay Loam</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Hardiness Zone</span>
+      <span class="meta-value">USDA 7a</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Last Updated</span>
+      <span class="meta-value">March 2026</span>
+    </div>
+  </div>
+</section>
+
+<!-- HOW TO USE -->
+<section class="how-to-use">
+  <div class="info-box">
+    <h3>How to Use This Calendar</h3>
+    <p>Every task is triggered by a soil temperature threshold or observable site condition. Acting on calendar date alone is the single most common reason homeowners in Brambleton waste product and miss windows.</p>
+    <p>Monitor soil temperature at <strong style="color:var(--straw);">soiltemperatures.org</strong> or push a probe thermometer 2" into the lawn at 8 AM. Loudoun clay lags air temperature by 1–3 weeks.</p>
+  </div>
+</section>
+
+<!-- SOIL TEMP TRIGGERS TABLE -->
+<section class="trigger-section">
+  <h2 class="section-heading">Soil Temperature Triggers</h2>
+  <p class="section-sub">Reference these before executing any task in this calendar</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Trigger</th>
+        <th>What It Means</th>
+        <th>Applied To</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>50–55°F rising</td><td>Crabgrass germination beginning — pre-emergent window opening</td><td>Pre-emergent, lawn</td></tr>
+      <tr><td>65°F rising</td><td>Warm-season weed pressure high; fescue slowing. Do not fertilize or aerate.</td><td>Fescue management</td></tr>
+      <tr><td>55–65°F falling</td><td>Fescue's prime growth window; seed germination optimal; aeration timing</td><td>Overseeding, aeration, fall fert</td></tr>
+      <tr><td>40°F falling</td><td>Root activity ending; last fertilizer window; prep for dormancy</td><td>Late-season fertilizer</td></tr>
+      <tr><td>Sustained overnight lows below 32°F</td><td>Irrigation winterization must be complete; humidifier season begins</td><td>Plumbing, HVAC</td></tr>
+      <tr><td>Forsythia blooming</td><td>Reliable Loudoun indicator soil temps approaching 50°F — backup timing cue</td><td>Pre-emergent backup trigger</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- CLAY FUNDAMENTALS -->
+<section class="clay-fundamentals">
+  <h2 class="section-heading">Clay Soil Fundamentals</h2>
+  <p class="section-sub">The operating logic behind every recommendation in this calendar</p>
+  <div class="clay-grid">
+    <div class="clay-card">
+      <h4>What Clay Does Well</h4>
+      <ul>
+        <li>Holds nutrients — applied fertilizer does not leach quickly</li>
+        <li>Retains moisture during drought; established fescue on clay survives dry summers better than sandy soils</li>
+        <li>Supports deep root systems when not compacted</li>
+      </ul>
+    </div>
+    <div class="clay-card">
+      <h4>What Clay Does Poorly</h4>
+      <ul>
+        <li>Drains slowly after heavy rain — pooling at low points and along foundation beds is expected</li>
+        <li>Compacts aggressively under foot traffic, mower weight, and freeze-thaw cycles</li>
+        <li>Warms slowly in spring and cools slowly in fall — effective windows shift 1–2 weeks vs. air temperature</li>
+      </ul>
+    </div>
+    <div class="clay-card">
+      <h4>What This Means for Your Lawn</h4>
+      <ul>
+        <li>Thin front turf density is almost certainly compaction-driven, not a seed or fertilizer problem</li>
+        <li>Do not aerate in spring — fall is your only window</li>
+        <li>Never cut fescue below 3.5" on clay in warming temps. Short cuts stress-die in summer heat.</li>
+      </ul>
+    </div>
+    <div class="clay-card">
+      <h4>What This Means for Your Beds</h4>
+      <ul>
+        <li>Standing water more than 24 hours after rain is a drainage problem, not a watering problem</li>
+        <li>Annual compost top-dressing is the primary long-term fix for clay drainage in beds</li>
+        <li>Mulch at 2–3" regulates clay bed temp swings and retains moisture uniformly</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SEASON TABS -->
+<section class="seasons">
+  <h2 class="section-heading">Seasonal Task Guide</h2>
+  <p class="section-sub">Tasks organized by season — all triggered by soil conditions, not calendar months</p>
+
+  <div class="season-tabs">
+    <button class="season-tab active" data-season="spring" onclick="showSeason('spring')">Spring</button>
+    <button class="season-tab" data-season="summer" onclick="showSeason('summer')">Summer</button>
+    <button class="season-tab" data-season="fall" onclick="showSeason('fall')">Fall</button>
+    <button class="season-tab" data-season="winter" onclick="showSeason('winter')">Winter</button>
+  </div>
+
+  <!-- SPRING -->
+  <div id="panel-spring" class="season-panel active">
+    <div class="season-banner spring">Spring &nbsp;|&nbsp; Soil Temps Rising 40°F → 70°F &nbsp;|&nbsp; Approx. Late Feb – May</div>
+
+    <p class="category-label">Lawn</p>
+    <div class="warning-note">Do not aerate in spring on clay soil. You will open the surface to hardening and weed seed germination without the recovery time fescue needs.</div>
+    <div class="task-row header">
+      <div class="task-cell">Trigger / Timing</div>
+      <div class="task-cell">Task</div>
+      <div class="task-cell">Product / Method</div>
+      <div class="task-cell clay-note">Clay Soil Note</div>
+    </div>
+    <div class="task-row"><div class="task-cell">Forsythia blooming or soil at 50–52°F rising</div><div class="task-cell">Apply crabgrass pre-emergent — split application</div><div class="task-cell">Prodiamine 65 WDG or Barricade granular. Half rate at forsythia; second half 4–6 weeks later.</div><div class="task-cell clay-note">Clay holds pre-emergent longer. Split application outperforms single on clay.</div></div>
+    <div class="task-row"><div class="task-cell">Soil 55°F rising; grass actively growing</div><div class="task-cell">First spring mow — set blade to 3.5" minimum</div><div class="task-cell">Do not remove more than 1/3 of blade per mow. Leave clippings.</div><div class="task-cell clay-note">Short cuts on warming clay opens grass to drought stress by June.</div></div>
+    <div class="task-row"><div class="task-cell">Soil 55–60°F, 4–6 weeks post pre-emergent</div><div class="task-cell">Light fertilizer — slow release only</div><div class="task-cell">Milorganite or slow-release 18-0-6 at half label rate. No fast-release nitrogen in spring.</div><div class="task-cell clay-note">Fast-release nitrogen in spring causes flush growth that exhausts fescue before summer.</div></div>
+    <div class="task-row"><div class="task-cell">April — beds actively emerging</div><div class="task-cell">Hand-weed beds; apply pre-emergent to beds</div><div class="task-cell">Snapshot or Preen granular in mulch beds. Apply before mulch refresh.</div><div class="task-cell clay-note">Chickweed and hairy bittercress visible in front bed photos — already ahead as of March.</div></div>
+    <div class="task-row"><div class="task-cell">Late April – May, after last frost</div><div class="task-cell">Refresh mulch beds to 2–3" depth</div><div class="task-cell">Shredded hardwood or double-ground. Do not use dyed mulch near foundation.</div><div class="task-cell clay-note">Fresh mulch helps clay beds retain moisture and regulate temp swings.</div></div>
+
+    <p class="category-label">Beds &amp; Shrubs</p>
+    <div class="task-row header">
+      <div class="task-cell">Trigger / Timing</div>
+      <div class="task-cell">Task</div>
+      <div class="task-cell">Product / Method</div>
+      <div class="task-cell clay-note">Clay Soil Note</div>
+    </div>
+    <div class="task-row"><div class="task-cell">Before new growth, late Feb – mid March</div><div class="task-cell">Prune crape myrtles — light shaping only</div><div class="task-cell">Remove crossing/dead branches. Never cut main trunks. Your multi-stem grove in the back yard is structurally sound — maintain its natural form.</div><div class="task-cell clay-note">Crape myrtles are root-hardy on Zone 7a clay.</div></div>
+    <div class="task-row"><div class="task-cell">Early March, before bud break</div><div class="task-cell">Cut back ornamental grasses</div><div class="task-cell">Cut to 4–6" from ground before new growth emerges. Do not delay past visible new growth.</div><div class="task-cell clay-note">Cutting active growth damages the crown.</div></div>
+    <div class="task-row"><div class="task-cell">Early March</div><div class="task-cell">Assess arborvitae winter bronzing — wait before pruning</div><div class="task-cell">Winter burn, not disease. Wait until May to see which sections push new growth vs. truly dead.</div><div class="task-cell clay-note">Bronzing in front bed is typical Brambleton clay-bed behavior in dry winters.</div></div>
+    <div class="task-row"><div class="task-cell">March–April, soil workable</div><div class="task-cell">Top-dress beds with 1" compost before mulching</div><div class="task-cell">Any bagged compost. Work lightly into top 1–2" of bed soil.</div><div class="task-cell clay-note">Organic matter is the primary long-term tool for improving clay drainage. Multi-year effort.</div></div>
+
+    <p class="category-label">HVAC</p>
+    <div class="task-row header">
+      <div class="task-cell">Trigger / Timing</div>
+      <div class="task-cell">Task</div>
+      <div class="task-cell">Product / Method</div>
+      <div class="task-cell clay-note">Clay Soil Note</div>
+    </div>
+    <div class="task-row"><div class="task-cell">Nighttime lows consistently above 50°F (mid-April)</div><div class="task-cell">Turn off whole-house humidifier; close bypass damper</div><div class="task-cell">Set humidistat to off or 0%. Close bypass damper on AprilAire/Honeywell units.</div><div class="task-cell clay-note">Leaving humidifier into cooling season causes condensation in ductwork and mold growth.</div></div>
+    <div class="task-row"><div class="task-cell">Before first AC run (daytime highs 75°F+)</div><div class="task-cell">Replace HVAC filter; inspect AC unit</div><div class="task-cell">1" filters: every 60 days. 4–5" media: every 6–12 months. Clear condenser coil debris.</div><div class="task-cell clay-note">Clay near foundation holds moisture — check crawlspace/basement for musty odors.</div></div>
+    <div class="task-row"><div class="task-cell">April</div><div class="task-cell">Install/activate dehumidifier for spring</div><div class="task-cell">Target 50–55% RH indoors for spring. Lower to 45–50% by June.</div><div class="task-cell clay-note">Brambleton summers hit 75–85% outdoor humidity. Active dehumidification is necessary.</div></div>
+
+    <p class="category-label">Plumbing &amp; Irrigation</p>
+    <div class="task-row header">
+      <div class="task-cell">Trigger / Timing</div>
+      <div class="task-cell">Task</div>
+      <div class="task-cell">Product / Method</div>
+      <div class="task-cell clay-note">Clay Soil Note</div>
+    </div>
+    <div class="task-row"><div class="task-cell">After last hard freeze (typically mid-April)</div><div class="task-cell">Re-open irrigation system; inspect all heads</div><div class="task-cell">Pressurize slowly. Walk every zone. Check head alignment after freeze-thaw cycle.</div><div class="task-cell clay-note">Clay expansion/contraction over winter commonly misaligns heads and cracks lateral lines.</div></div>
+    <div class="task-row"><div class="task-cell">April</div><div class="task-cell">Inspect and flush gutters and downspouts</div><div class="task-cell">Verify downspout extensions direct water at least 6' from foundation.</div><div class="task-cell clay-note">Clay does not percolate. Poor downspout extension = foundation water intrusion risk.</div></div>
+    <div class="task-row"><div class="task-cell">April</div><div class="task-cell">Test sump pump operation</div><div class="task-cell">Pour water into pit; verify float triggers pump and discharge is clear.</div><div class="task-cell clay-note">Clay does not percolate — sump is your primary defense against basement water.</div></div>
+  </div>
+
+  <!-- SUMMER -->
+  <div id="panel-summer" class="season-panel">
+    <div class="season-banner summer">Summer &nbsp;|&nbsp; Soil Temps 70°F – 85°F+ &nbsp;|&nbsp; Approx. June – August</div>
+    <div class="warning-note">Summer is fescue's stress season. Your primary job is not to intervene — it is to stop making things worse. Fescue goes semi-dormant in Loudoun County clay summers. Do not fight it.</div>
+
+    <p class="category-label">Lawn — Summer Rules</p>
+    <div class="task-row header">
+      <div class="task-cell">Trigger / Timing</div>
+      <div class="task-cell">Task</div>
+      <div class="task-cell">Product / Method</div>
+      <div class="task-cell clay-note">Clay Soil Note</div>
+    </div>
+    <div class="task-row"><div class="task-cell">Soil above 70°F (June onward)</div><div class="task-cell">Raise mowing height to 4"</div><div class="task-cell">No exceptions on clay soil. Taller grass shades the root zone and reduces soil moisture loss.</div><div class="task-cell clay-note">Short-cut fescue on clay in summer is the single largest preventable cause of turf loss in this region.</div></div>
+    <div class="task-row"><div class="task-cell">Heat stress visible: footprinting, blue-gray color</div><div class="task-cell">Deep, infrequent watering only</div><div class="task-cell">1" per week total; 1–2 applications. Water at dawn. Do not water daily.</div><div class="task-cell clay-note">Clay holds water long. Frequent shallow watering causes surface root systems that die in heat.</div></div>
+    <div class="task-row"><div class="task-cell">June – August: Do not do any of the following</div><div class="task-cell">No fertilizer, no aeration, no overseeding, no lime</div><div class="task-cell">All of these damage heat-stressed fescue. If you do one thing this summer, leave the lawn alone.</div><div class="task-cell clay-note">Any nutrient flush in heat causes crown burn on fescue over clay.</div></div>
+    <div class="task-row"><div class="task-cell">June – August: brown patches that lift like carpet</div><div class="task-cell">Monitor for grubs; treat if confirmed</div><div class="task-cell">Apply Grubex (chlorantraniliprole) in June. Merit/imidacloprid June–July if grubs confirmed.</div><div class="task-cell clay-note">Clay somewhat deters grubs vs. sandy soils, but compacted layers near surface can concentrate feeding.</div></div>
+
+    <p class="category-label">Beds &amp; Shrubs</p>
+    <div class="task-row header">
+      <div class="task-cell">Trigger / Timing</div>
+      <div class="task-cell">Task</div>
+      <div class="task-cell">Product / Method</div>
+      <div class="task-cell clay-note">Clay Soil Note</div>
+    </div>
+    <div class="task-row"><div class="task-cell">June, before summer heat</div><div class="task-cell">Final deadheading and light shaping of spring shrubs</div><div class="task-cell">Prune immediately after bloom for spring bloomers. Do not prune after July 4 — cuts next year's buds.</div><div class="task-cell clay-note">Maintain 2–3" mulch throughout summer. Clay holds heat in beds; mulch is your best tool.</div></div>
+    <div class="task-row"><div class="task-cell">June – August</div><div class="task-cell">Monitor boxwoods for blight and leafminer</div><div class="task-cell">Blight: dark spots, defoliation — treat with chlorothalonil. Leafminer: blistered leaves — imidacloprid.</div><div class="task-cell clay-note">Clay bed moisture retention creates favorable conditions for boxwood root issues. Verify beds drain within 24 hours.</div></div>
+    <div class="task-row"><div class="task-cell">Monthly walk</div><div class="task-cell">Hand-pull weeds before they seed</div><div class="task-cell">No herbicide near established shrubs unless labeled safe. Hand removal is primary tool.</div><div class="task-cell clay-note">Do not let summer annuals go to seed — you are programming next year's problem.</div></div>
+
+    <p class="category-label">HVAC</p>
+    <div class="task-row header">
+      <div class="task-cell">Trigger / Timing</div>
+      <div class="task-cell">Task</div>
+      <div class="task-cell">Product / Method</div>
+      <div class="task-cell clay-note">Note</div>
+    </div>
+    <div class="task-row"><div class="task-cell">June – August</div><div class="task-cell">Interior humidity target: 45–50% RH</div><div class="task-cell">Run dehumidifier as needed. Whole-house unit: set to 48% RH.</div><div class="task-cell clay-note">Above 60% RH promotes mold. Below 40% = AC system problem or dehumidifier oversized.</div></div>
+    <div class="task-row"><div class="task-cell">June</div><div class="task-cell">Replace HVAC filter</div><div class="task-cell">Even if not at 60-day mark — pollen/particulate load highest in late spring/early summer.</div><div class="task-cell clay-note">Clogged filter on a humid day reduces AC dehumidification performance.</div></div>
+    <div class="task-row"><div class="task-cell">August</div><div class="task-cell">Schedule HVAC fall inspection before demand season</div><div class="task-cell">Professional tune-up: coil cleaning, refrigerant check, drain pan inspection.</div><div class="task-cell clay-note">Drain pan and condensate line clogs are the #1 source of interior HVAC water damage in humid climates.</div></div>
+  </div>
+
+  <!-- FALL -->
+  <div id="panel-fall" class="season-panel">
+    <div class="season-banner fall">Fall &nbsp;|&nbsp; Soil Temps Falling 70°F → 45°F &nbsp;|&nbsp; Approx. Sept – Nov</div>
+    <div class="warning-note" style="border-left-color:#c4873a; color:#dba96a; background:rgba(122,59,0,0.12);">Fall is your highest-leverage season. Every dollar and hour spent on fescue lawn in fall pays back at 3× versus an equivalent spring effort. This is when clay soil works for you, not against you.</div>
+
+    <p class="category-label">Lawn — The Critical Window</p>
+    <div class="task-row header">
+      <div class="task-cell">Trigger / Timing</div>
+      <div class="task-cell">Task</div>
+      <div class="task-cell">Product / Method</div>
+      <div class="task-cell clay-note">Clay Soil Note</div>
+    </div>
+    <div class="task-row"><div class="task-cell">Soil 55–65°F falling (late Aug – mid Sept)</div><div class="task-cell">Core aeration — mandatory annual task</div><div class="task-cell">Hire or rent core aerator. Pull 2–3" plugs. Leave plugs on surface. Aerate when soil has some moisture but is not saturated.</div><div class="task-cell clay-note">The most important single task for your clay lawn. Compaction is the root cause of thin turf. Annual aeration is not optional on Loudoun clay.</div></div>
+    <div class="task-row"><div class="task-cell">Immediately after aeration, soil still 55–65°F</div><div class="task-cell">Overseed at renovation rate</div><div class="task-cell">Tall fescue blend at 5–7 lbs/1000 sq ft over aerated thin areas; 3–4 lbs/1000 sq ft maintenance rate over acceptable turf.</div><div class="task-cell clay-note">Clay stays warm longer than air temp suggests, giving seed a longer germination window into October.</div></div>
+    <div class="task-row"><div class="task-cell">At seeding</div><div class="task-cell">Apply starter fertilizer</div><div class="task-cell">18-24-12 or similar starter. Keep seedbed moist 2× per day until germination (10–14 days), then once/day until established.</div><div class="task-cell clay-note">Irrigation must stay active during seed establishment. Do not winterize irrigation until mid-October at earliest.</div></div>
+    <div class="task-row"><div class="task-cell">6 weeks post-germination</div><div class="task-cell">Apply fall winterizer fertilizer (high potassium)</div><div class="task-cell">12-0-18 or 16-0-8. High potassium strengthens fescue roots and winter hardiness.</div><div class="task-cell clay-note">Fall potassium is especially important on clay where drainage stress is high through winter.</div></div>
+    <div class="task-row"><div class="task-cell">Soil 50–55°F falling, 4–6 weeks before first hard freeze</div><div class="task-cell">Apply lime if soil test indicates (pH below 6.0)</div><div class="task-cell">Pelletized lime at test-recommended rate. Apply after aeration and before final fertilizer.</div><div class="task-cell clay-note">Loudoun clay typically runs pH 5.5–6.2. Fescue prefers 6.0–6.8. Fertilizing without correcting pH is waste.</div></div>
+    <div class="task-row"><div class="task-cell">October, one pass</div><div class="task-cell">Second pre-emergent round for winter annuals</div><div class="task-cell">Prodiamine or Dimension at label rate before soil drops below 50°F.</div><div class="task-cell clay-note">Chickweed was visible in your front bed in March — it overwintered. Get ahead of it this fall.</div></div>
+
+    <p class="category-label">Beds &amp; Shrubs</p>
+    <div class="task-row header">
+      <div class="task-cell">Trigger / Timing</div>
+      <div class="task-cell">Task</div>
+      <div class="task-cell">Product / Method</div>
+      <div class="task-cell clay-note">Clay Soil Note</div>
+    </div>
+    <div class="task-row"><div class="task-cell">October, after first hard frost</div><div class="task-cell">Cut back spent perennials; leave ornamental grasses until Feb</div><div class="task-cell">Cut floppy perennials to 4–6". Leave ornamental grasses standing — they protect crowns and provide winter interest.</div><div class="task-cell clay-note">Your backyard ornamental grass clumps should be left standing through winter.</div></div>
+    <div class="task-row"><div class="task-cell">October – November</div><div class="task-cell">Refresh mulch to 3" depth for winter insulation</div><div class="task-cell">Apply after beds are cleaned. Leave 2–3" gap at shrub stems and tree trunk bases.</div><div class="task-cell clay-note">Mulch insulates clay from freeze-thaw cycles that heave plants. Critical for recently-planted back bed shrubs.</div></div>
+    <div class="task-row"><div class="task-cell">November, before hard freeze</div><div class="task-cell">Apply anti-desiccant to evergreens</div><div class="task-cell">Wilt-Pruf or equivalent on arborvitae, boxwoods, and hollies. Apply on a day above 40°F.</div><div class="task-cell clay-note">Your arborvitae bronzing in the front bed is winter desiccation. Anti-desiccant is the prevention. Do this every fall.</div></div>
+
+    <p class="category-label">HVAC</p>
+    <div class="task-row header">
+      <div class="task-cell">Trigger / Timing</div>
+      <div class="task-cell">Task</div>
+      <div class="task-cell">Product / Method</div>
+      <div class="task-cell clay-note">Note</div>
+    </div>
+    <div class="task-row"><div class="task-cell">Nighttime lows consistently at/below 50°F (mid-October)</div><div class="task-cell">Turn on whole-house humidifier; open bypass damper</div><div class="task-cell">Set humidistat to 35% initially; adjust to 35–45% by mid-November.</div><div class="task-cell clay-note">Dry Loudoun winters with forced-air heat drive interior RH below 20% without humidification.</div></div>
+    <div class="task-row"><div class="task-cell">October, before first heating use</div><div class="task-cell">Replace HVAC filter; replace humidifier water panel</div><div class="task-cell">AprilAire/Honeywell water panels: replace annually at humidifier season start. Do not reuse old panels.</div><div class="task-cell clay-note">A clogged humidifier pad delivers no moisture and allows mineral buildup.</div></div>
+    <div class="task-row"><div class="task-cell">Outdoor dew point consistently below 55°F</div><div class="task-cell">Shut down dehumidifier for winter</div><div class="task-cell">Drain reservoir; clean filter. Store portable units in conditioned space.</div><div class="task-cell clay-note">Running a dehumidifier in dry winter pulls RH below 30%, creating the same problems as no humidifier.</div></div>
+
+    <p class="category-label">Plumbing &amp; Irrigation</p>
+    <div class="task-row header">
+      <div class="task-cell">Trigger / Timing</div>
+      <div class="task-cell">Task</div>
+      <div class="task-cell">Product / Method</div>
+      <div class="task-cell clay-note">Clay Soil Note</div>
+    </div>
+    <div class="task-row"><div class="task-cell">After overseeding established AND before first hard freeze (mid–late October)</div><div class="task-cell">Irrigation winterization — blow-out method</div><div class="task-cell">Licensed contractor with commercial compressor (50 CFM min). Blow each zone until no water exhausts. Do not use home compressor.</div><div class="task-cell clay-note">Clay near heads retains moisture — do not assume water has drained. Every zone must be blown. Store hoses indoors before first freeze.</div></div>
+    <div class="task-row"><div class="task-cell">November, before hard freeze</div><div class="task-cell">Close and drain hose bibs; insulate exposed pipes</div><div class="task-cell">Close interior shutoff valves. Open bib to drain residual. Foam insulation on exposed pipe runs in garage or crawlspace.</div><div class="task-cell clay-note">The exposed hose bib in the front bed area is at freeze risk. This is not optional.</div></div>
+    <div class="task-row"><div class="task-cell">Mid-November, after leaf fall</div><div class="task-cell">Clean gutters; flush downspouts</div><div class="task-cell">Wait until leaves have largely fallen. Flush downspouts with hose; verify extensions are intact.</div><div class="task-cell clay-note">Clogged gutters on clay properties = ice dams and foundation splash-back through winter.</div></div>
+  </div>
+
+  <!-- WINTER -->
+  <div id="panel-winter" class="season-panel">
+    <div class="season-banner winter">Winter &nbsp;|&nbsp; Soil Dormant &nbsp;|&nbsp; Approx. Dec – Feb</div>
+
+    <p class="category-label">Lawn &amp; Beds</p>
+    <div class="task-row header">
+      <div class="task-cell">Trigger / Timing</div>
+      <div class="task-cell">Task</div>
+      <div class="task-cell">Product / Method</div>
+      <div class="task-cell clay-note">Clay Soil Note</div>
+    </div>
+    <div class="task-row"><div class="task-cell">December – February</div><div class="task-cell">Do nothing to the lawn. Do not walk on frozen or saturated turf.</div><div class="task-cell">Dormant fescue does not need intervention. Foot traffic on frozen clay compacts the surface layer and breaks dormant root crowns.</div><div class="task-cell clay-note">Resist the urge to apply anything. Wait for soil temps. Dormant lawn on clay needs nothing.</div></div>
+    <div class="task-row"><div class="task-cell">December – January</div><div class="task-cell">Order soil test kit; collect sample when ground is workable</div><div class="task-cell">Virginia Tech Soil Testing Lab or SoilKit. Test every 2–3 years at minimum.</div><div class="task-cell clay-note">Soil testing is the highest-ROI action you can take. It informs everything else in this calendar.</div></div>
+    <div class="task-row"><div class="task-cell">January – February</div><div class="task-cell">Plan bed improvements; order seed, pre-emergent, fertilizer</div><div class="task-cell">Select tall fescue blend labeled for Zone 7a shade/sun as applicable. Confirm pre-emergent quantity.</div><div class="task-cell clay-note">Planning now means no rushed decisions when timing windows open in late February.</div></div>
+    <div class="task-row"><div class="task-cell">February 15 onward</div><div class="task-cell">Begin monitoring soil temperature 2× per week</div><div class="task-cell">Use soiltemperatures.org. When approaching 45°F, be ready to act.</div><div class="task-cell clay-note">Loudoun clay warms 7–10 days after sandy soils. Do not trust generic Northern VA reports — use your actual readings.</div></div>
+
+    <p class="category-label">HVAC</p>
+    <div class="task-row header">
+      <div class="task-cell">Trigger / Timing</div>
+      <div class="task-cell">Task</div>
+      <div class="task-cell">Product / Method</div>
+      <div class="task-cell clay-note">Note</div>
+    </div>
+    <div class="task-row"><div class="task-cell">December – February</div><div class="task-cell">Interior humidity target: 35–45% RH</div><div class="task-cell">Whole-house humidifier running. Adjust downward if condensation forms on windows (reduce 5% at a time).</div><div class="task-cell clay-note">Window condensation = interior humidity too high for outdoor temp differential.</div></div>
+    <div class="task-row"><div class="task-cell">January</div><div class="task-cell">Replace HVAC filter (heating season midpoint)</div><div class="task-cell">Maintain schedule regardless of visible dirt. Clay dust is fine-particle and loads filters faster.</div><div class="task-cell clay-note">Fine clay particulate is harder on filters than coarse soils.</div></div>
+  </div>
+</section>
+
+<!-- HUMIDITY REFERENCE -->
+<section class="humidity-section">
+  <h2 class="section-heading">Interior Humidity Targets by Season</h2>
+  <p class="section-sub">Calibrated for Brambleton's climate — hot humid summers, dry forced-air winters</p>
+  <div class="humidity-grid">
+    <div class="humidity-card winter">
+      <div class="humidity-season">Winter</div>
+      <div class="humidity-target">35–45<span>% RH</span></div>
+      <div class="humidity-method">Whole-house humidifier running. Below 30%: static, cracking woodwork. Above 50%: window condensation, mold risk.</div>
+    </div>
+    <div class="humidity-card spring">
+      <div class="humidity-season">Spring</div>
+      <div class="humidity-target">40–50<span>% RH</span></div>
+      <div class="humidity-method">Humidifier tapering off; dehumidifier on if needed. Use humidistat — not instinct.</div>
+    </div>
+    <div class="humidity-card summer">
+      <div class="humidity-season">Summer</div>
+      <div class="humidity-target">45–50<span>% RH</span></div>
+      <div class="humidity-method">Dehumidifier running; AC providing baseline dehumidification. Above 60% sustained = mold conditions.</div>
+    </div>
+    <div class="humidity-card fall">
+      <div class="humidity-season">Fall</div>
+      <div class="humidity-target">45→40<span>% RH</span></div>
+      <div class="humidity-method">Transition month — watch outdoor dew point. Turn humidifier on before you feel dry, not after.</div>
+    </div>
+  </div>
+  <div class="info-box" style="margin-top: 1rem;">
+    <h3>Calibration Notes</h3>
+    <p>A $15 digital hygrometer in the main living area is your most useful tool here. Do not rely on the HVAC thermostat RH display — it reads return air, not your living space.</p>
+    <p>If you have wood floors, keep summer RH above 40% and winter RH above 35%. Wood movement from humidity swings is the primary cause of floor gapping and squeaking.</p>
+  </div>
+</section>
+
+<!-- SITE OBSERVATIONS -->
+<section class="obs-section">
+  <h2 class="section-heading">Site Observations — March 2026</h2>
+  <p class="section-sub">Based on direct photo review — informs your priority task list for this first season</p>
+  <div class="obs-grid">
+    <div class="obs-card">
+      <div class="obs-area">Front Lawn</div>
+      <div class="obs-finding">Thin turf density; dormant tall fescue visible but patchy. Classic clay compaction presentation.</div>
+      <div class="obs-action">Core aeration in late August–September is your highest-ROI action this year. Do not skip it.</div>
+    </div>
+    <div class="obs-card">
+      <div class="obs-area">Front Bed (Foundation)</div>
+      <div class="obs-finding">Chickweed and hairy bittercress already germinating in mulch as of early March. Mulch layer thin and decomposed in places.</div>
+      <div class="obs-action">Hand-pull winter annuals now before they set seed. Apply Preen/Snapshot before mulch refresh in April.</div>
+    </div>
+    <div class="obs-card">
+      <div class="obs-area">Front Bed Arborvitae</div>
+      <div class="obs-finding">Winter bronzing / desiccation stress visible on multiple specimens.</div>
+      <div class="obs-action">Do not prune yet — wait until May. Apply anti-desiccant this fall before it happens again.</div>
+    </div>
+    <div class="obs-card">
+      <div class="obs-area">Back Yard — Crape Myrtle Grove</div>
+      <div class="obs-finding">Multi-stem forms in good structural shape. Hardscape patio is well-built.</div>
+      <div class="obs-action">Light corrective pruning only — remove crossing branches. Do not cut the trunk leaders.</div>
+    </div>
+    <div class="obs-card">
+      <div class="obs-area">Back Bed — Young Magnolias</div>
+      <div class="obs-finding">Two young magnolia specimens in first 2–3 years of establishment. Some leaf retention visible.</div>
+      <div class="obs-action">Check that root balls have not heaved over winter. Maintain 3" mulch ring — keep away from trunk flare.</div>
+    </div>
+    <div class="obs-card">
+      <div class="obs-area">Back Shrub Border</div>
+      <div class="obs-finding">Hollies, inkberry, broadleaf evergreens, and blue spruce along the tree line. Good bones.</div>
+      <div class="obs-action">Continue mulching annually. Monitor for scale on hollies in spring.</div>
+    </div>
+    <div class="obs-card">
+      <div class="obs-area">Back Boundary</div>
+      <div class="obs-finding">Backs to HOA stormwater management area with native grasses. No maintenance obligation.</div>
+      <div class="obs-action">This is an asset — confirms your clay is in a broader drainage management zone. No action needed.</div>
+    </div>
+    <div class="obs-card">
+      <div class="obs-area">Irrigation</div>
+      <div class="obs-finding">Hose visible coiled in front bed as of March. Indicates possible incomplete winterization.</div>
+      <div class="obs-action">Confirm all zones were blown out. Inspect for cracked heads at spring startup. Store hoses before winter.</div>
+    </div>
+  </div>
+</section>
+
+<!-- QUICK REF -->
+<section class="quick-ref">
+  <h2 class="section-heading">Master Quick Reference</h2>
+  <p class="section-sub">All timing approximate for Brambleton average conditions — verify with soil temperature before acting</p>
+  <div class="quick-ref-grid">
+    <div class="qr-row qr-header">
+      <div class="qr-cell">Timing Trigger</div>
+      <div class="qr-cell">Task</div>
+      <div class="qr-cell">Category</div>
+    </div>
+    <div class="qr-row"><div class="qr-cell">Forsythia blooms / soil 50–52°F rising</div><div class="qr-cell">First pre-emergent application (split #1)</div><div class="qr-cell"><span class="badge badge-lawn">Lawn</span></div></div>
+    <div class="qr-row"><div class="qr-cell">4–6 weeks after first pre-emergent</div><div class="qr-cell">Second pre-emergent application (split #2)</div><div class="qr-cell"><span class="badge badge-lawn">Lawn</span></div></div>
+    <div class="qr-row"><div class="qr-cell">Early March, before bud break</div><div class="qr-cell">Cut back ornamental grasses</div><div class="qr-cell"><span class="badge badge-beds">Beds</span></div></div>
+    <div class="qr-row"><div class="qr-cell">Before new growth, late Feb–March</div><div class="qr-cell">Prune crape myrtles (light shaping only)</div><div class="qr-cell"><span class="badge badge-beds">Beds</span></div></div>
+    <div class="qr-row"><div class="qr-cell">After last hard freeze (~mid April)</div><div class="qr-cell">Irrigation system startup; inspect all zones</div><div class="qr-cell"><span class="badge badge-irr">Irrigation</span></div></div>
+    <div class="qr-row"><div class="qr-cell">Nighttime lows consistently above 50°F</div><div class="qr-cell">Turn OFF whole-house humidifier; close bypass damper</div><div class="qr-cell"><span class="badge badge-hvac">HVAC</span></div></div>
+    <div class="qr-row"><div class="qr-cell">Before first AC run</div><div class="qr-cell">Replace HVAC filter; inspect AC unit</div><div class="qr-cell"><span class="badge badge-hvac">HVAC</span></div></div>
+    <div class="qr-row"><div class="qr-cell">April–May</div><div class="qr-cell">Refresh mulch beds to 2–3"</div><div class="qr-cell"><span class="badge badge-beds">Beds</span></div></div>
+    <div class="qr-row"><div class="qr-cell">April</div><div class="qr-cell">Gutter inspection and flush; test sump pump</div><div class="qr-cell"><span class="badge badge-plumb">Plumbing</span></div></div>
+    <div class="qr-row"><div class="qr-cell">June</div><div class="qr-cell">Replace HVAC filter</div><div class="qr-cell"><span class="badge badge-hvac">HVAC</span></div></div>
+    <div class="qr-row"><div class="qr-cell">Soil 70°F+ (June)</div><div class="qr-cell">Raise mowing height to 4"; no fertilizer or aeration until fall</div><div class="qr-cell"><span class="badge badge-lawn">Lawn</span></div></div>
+    <div class="qr-row"><div class="qr-cell">June</div><div class="qr-cell">Monitor for grubs; apply preventive if history</div><div class="qr-cell"><span class="badge badge-lawn">Lawn</span></div></div>
+    <div class="qr-row"><div class="qr-cell">August</div><div class="qr-cell">Schedule HVAC fall inspection</div><div class="qr-cell"><span class="badge badge-hvac">HVAC</span></div></div>
+    <div class="qr-row"><div class="qr-cell">Soil 55–65°F falling (late Aug–mid Sept)</div><div class="qr-cell">Core aeration — mandatory annual task</div><div class="qr-cell"><span class="badge badge-lawn">Lawn</span></div></div>
+    <div class="qr-row"><div class="qr-cell">Immediately after aeration</div><div class="qr-cell">Overseed at renovation/maintenance rate</div><div class="qr-cell"><span class="badge badge-lawn">Lawn</span></div></div>
+    <div class="qr-row"><div class="qr-cell">6 weeks post-germination</div><div class="qr-cell">Apply fall winterizer fertilizer (high potassium)</div><div class="qr-cell"><span class="badge badge-lawn">Lawn</span></div></div>
+    <div class="qr-row"><div class="qr-cell">Soil 50–55°F falling</div><div class="qr-cell">Apply lime if soil test indicates</div><div class="qr-cell"><span class="badge badge-lawn">Lawn</span></div></div>
+    <div class="qr-row"><div class="qr-cell">October</div><div class="qr-cell">Second pre-emergent round for winter annuals</div><div class="qr-cell"><span class="badge badge-lawn">Lawn</span></div></div>
+    <div class="qr-row"><div class="qr-cell">Nighttime lows consistently at/below 50°F</div><div class="qr-cell">Turn ON whole-house humidifier; open bypass damper</div><div class="qr-cell"><span class="badge badge-hvac">HVAC</span></div></div>
+    <div class="qr-row"><div class="qr-cell">October, before heating season</div><div class="qr-cell">Replace humidifier water panel/pad</div><div class="qr-cell"><span class="badge badge-hvac">HVAC</span></div></div>
+    <div class="qr-row"><div class="qr-cell">Mid–late October (after seed established)</div><div class="qr-cell">Irrigation winterization — blow out all zones</div><div class="qr-cell"><span class="badge badge-irr">Irrigation</span></div></div>
+    <div class="qr-row"><div class="qr-cell">November before hard freeze</div><div class="qr-cell">Apply anti-desiccant to arborvitae, boxwoods, hollies</div><div class="qr-cell"><span class="badge badge-beds">Beds</span></div></div>
+    <div class="qr-row"><div class="qr-cell">November before hard freeze</div><div class="qr-cell">Disconnect/insulate hose bibs; store hoses indoors</div><div class="qr-cell"><span class="badge badge-plumb">Plumbing</span></div></div>
+    <div class="qr-row"><div class="qr-cell">Mid-November, after leaf fall</div><div class="qr-cell">Clean gutters; flush downspouts</div><div class="qr-cell"><span class="badge badge-plumb">Plumbing</span></div></div>
+    <div class="qr-row"><div class="qr-cell">December–January</div><div class="qr-cell">Order soil test; plan spring inputs</div><div class="qr-cell"><span class="badge badge-lawn">Lawn</span></div></div>
+    <div class="qr-row"><div class="qr-cell">January</div><div class="qr-cell">Replace HVAC filter (heating midpoint)</div><div class="qr-cell"><span class="badge badge-hvac">HVAC</span></div></div>
+    <div class="qr-row"><div class="qr-cell">Feb 15 onward</div><div class="qr-cell">Begin monitoring soil temperature 2× per week</div><div class="qr-cell"><span class="badge badge-lawn">Lawn</span></div></div>
+  </div>
+</section>
+
+<footer>
+  <p>Brambleton Home &nbsp;|&nbsp; Maintenance Calendar &nbsp;|&nbsp; Zone 7a, Loudoun County, VA &nbsp;|&nbsp; Updated March 2026</p>
+  <a class="footer-link" href="/brambleton/">Back to Home</a>
+</footer>
+
+<script>
+  function showSeason(season) {
+    document.querySelectorAll('.season-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.season-panel').forEach(p => p.classList.remove('active'));
+    document.querySelector('[data-season="' + season + '"]').classList.add('active');
+    document.getElementById('panel-' + season).classList.add('active');
+  }
+</script>
+</body>
+</html>
