@@ -238,9 +238,9 @@ button:active:not(:disabled) { transform: translateY(1px); }
 
   function render() {
     const sv = sel >= 0 ? S.vals[sel] : 0;
-    // With a number selected, shade every cell that number blocks: the row, column and box of each copy.
+    // With a number selected, shade the row and column of each copy (not the box, so the solver still does some work).
     const peerSet = new Set();
-    if (sv) S.vals.forEach((v, i) => { if (v === sv) PEERS[i].forEach(p => peerSet.add(p)); });
+    if (sv) S.vals.forEach((v, i) => { if (v === sv) PEERS[i].forEach(p => { if (row(p) === row(i) || col(p) === col(i)) peerSet.add(p); }); });
     else if (sel >= 0) PEERS[sel].forEach(p => peerSet.add(p));
     for (let i = 0; i < 81; i++) {
       const c = cells[i], v = S.vals[i];
