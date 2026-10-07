@@ -3,41 +3,37 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#1d2a3a">
+<meta name="theme-color" content="#eef1f4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b0907" media="(prefers-color-scheme: dark)">
 <title>Brambleton Sudoku</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
 <style>
-/* Layout: one-screen puzzle app; board on top, controls in a thumb-reach tray below. Graph-paper ink on cool paper. */
+/* Layout: one-screen puzzle app; board on top, controls in a thumb-reach tray below.
+   Day is graph-paper ink on cool paper; Night is amber on warm black, low in blue light for playing in bed. */
 :root {
-  --paper: #eef1f4;
-  --sheet: #fbfcfd;
-  --ink: #1d2a3a;
-  --pencil: #6a7787;
-  --rule: #c9d1db;
-  --accent: #2f5fa7;
-  --accent-soft: #dbe6f6;
-  --peer: #e8edf3;
-  --error: #b3261e;
-  --error-soft: #f6dcda;
-  --good: #2e7d4f;
+  --paper: #eef1f4; --sheet: #fbfcfd; --ink: #1d2a3a; --pencil: #5d6a7a; --rule: #c3ccd7; --frame: #1d2a3a;
+    --accent: #2456a0; --accent-soft: #c9dbf4; --peer: #dde4ec; --error: #b3261e; --error-soft: #f6d6d3; --good: #2e7d4f; color-scheme: light;
   --display: "Young Serif", Georgia, "Times New Roman", serif;
   --ui: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #12171e; --sheet: #1a212b; --ink: #e3e9f0; --pencil: #8d9aab;
-    --rule: #344050; --accent: #8db4f0; --accent-soft: #24354e; --peer: #212a36;
-    --error: #f08a80; --error-soft: #47231f; --good: #7fcf9e; color-scheme: dark;
+    --paper: #0b0907; --sheet: #15110d; --ink: #e6d4b8; --pencil: #a8916f; --rule: #362d23; --frame: #8c7453;
+    --accent: #f2a541; --accent-soft: #4d3313; --peer: #2a2119; --error: #ff8a70; --error-soft: #4f1c13; --good: #a9d38a; color-scheme: dark;
   }
 }
-:root[data-theme="dark"] {
-  --paper: #12171e; --sheet: #1a212b; --ink: #e3e9f0; --pencil: #8d9aab;
-  --rule: #344050; --accent: #8db4f0; --accent-soft: #24354e; --peer: #212a36;
-  --error: #f08a80; --error-soft: #47231f; --good: #7fcf9e; color-scheme: dark;
+:root[data-theme="dark"], :root[data-mode="night"] {
+  --paper: #0b0907; --sheet: #15110d; --ink: #e6d4b8; --pencil: #a8916f; --rule: #362d23; --frame: #8c7453;
+    --accent: #f2a541; --accent-soft: #4d3313; --peer: #2a2119; --error: #ff8a70; --error-soft: #4f1c13; --good: #a9d38a; color-scheme: dark;
+}
+:root[data-mode="day"] {
+  --paper: #eef1f4; --sheet: #fbfcfd; --ink: #1d2a3a; --pencil: #5d6a7a; --rule: #c3ccd7; --frame: #1d2a3a;
+    --accent: #2456a0; --accent-soft: #c9dbf4; --peer: #dde4ec; --error: #b3261e; --error-soft: #f6d6d3; --good: #2e7d4f; color-scheme: light;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html, body { margin: 0; }
 body {
   background: var(--paper); color: var(--ink); font-family: var(--ui); font-size: 15px;
@@ -56,11 +52,11 @@ h1 { font-family: var(--display); font-weight: 400; font-size: 1.75rem; margin: 
   border: 1px solid var(--rule); background: var(--sheet); color: var(--ink);
   font: 700 0.78rem var(--ui); letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
 }
-.levels button[aria-pressed="true"] { background: var(--ink); color: var(--sheet); border-color: var(--ink); }
+.levels button[aria-pressed="true"] { background: var(--accent-soft); color: var(--ink); border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
 
 .board {
   display: grid; grid-template-columns: repeat(9, 1fr); width: 100%; max-width: 100%; aspect-ratio: 1;
-  background: var(--sheet); border: 2.5px solid var(--ink); border-radius: 4px; user-select: none; touch-action: manipulation;
+  background: var(--sheet); border: 2.5px solid var(--frame); border-radius: 4px; user-select: none; touch-action: manipulation;
 }
 .cell {
   position: relative; display: grid; place-items: center; border: 0; padding: 0; margin: 0;
@@ -70,8 +66,8 @@ h1 { font-family: var(--display); font-weight: 400; font-size: 1.75rem; margin: 
 }
 .cell:nth-child(9n) { border-right: 0; }
 .cell:nth-child(n+73) { border-bottom: 0; }
-.cell.bx { border-right: 2px solid var(--ink); }
-.cell.by { border-bottom: 2px solid var(--ink); }
+.cell.bx { border-right: 2px solid var(--frame); }
+.cell.by { border-bottom: 2px solid var(--frame); }
 .cell.given { color: var(--ink); font-weight: 700; }
 .cell.peer { background: var(--peer); }
 .cell.same { background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent); }
@@ -88,7 +84,7 @@ h1 { font-family: var(--display); font-weight: 400; font-size: 1.75rem; margin: 
   font: 700 0.72rem var(--ui); letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer;
 }
 .tools button svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; }
-.tools button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--sheet); }
+.tools button[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
 .tools small { font-weight: 400; text-transform: none; letter-spacing: 0; opacity: 0.8; }
 
 .pad { display: grid; grid-template-columns: repeat(9, 1fr); gap: 5px; }
@@ -110,7 +106,12 @@ button:active:not(:disabled) { transform: translateY(1px); }
 .banner button { border: 0; background: var(--good); color: var(--sheet); border-radius: 6px; padding: 8px 12px; font: 700 0.85rem var(--ui); cursor: pointer; }
 .confirm { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 0.9rem; color: var(--pencil); }
 .confirm button { border: 1px solid var(--rule); background: var(--sheet); color: var(--ink); border-radius: 6px; padding: 6px 10px; font: 700 0.8rem var(--ui); cursor: pointer; }
-.confirm button.go { background: var(--ink); color: var(--sheet); border-color: var(--ink); }
+.confirm button.go { background: var(--accent-soft); color: var(--ink); border-color: var(--accent); }
+.mode {
+  display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--rule); background: var(--sheet); color: var(--ink);
+  border-radius: 999px; padding: 6px 12px; font: 700 0.78rem var(--ui); letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer;
+}
+.mode svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; }
 .hint { color: var(--pencil); font-size: 0.8rem; text-align: center; margin: 0; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
@@ -121,6 +122,7 @@ button:active:not(:disabled) { transform: translateY(1px); }
   <header>
     <h1>Sudoku</h1>
     <div class="meta"><span>Time <b id="time">0:00</b></span><span>Mistakes <b id="miss">0</b></span></div>
+    <button class="mode" id="mode" title="Switch between automatic, night and day colors"><svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg><span id="mode-label">Auto</span></button>
   </header>
 
   <div class="levels" role="group" aria-label="Difficulty">
@@ -156,7 +158,16 @@ button:active:not(:disabled) { transform: translateY(1px); }
 <script>
 (() => {
   const CLUES = { easy: 40, medium: 33, hard: 28, expert: 24 };
-  const KEY = 'brambleton-sudoku-v1';
+  const KEY = 'brambleton-sudoku-v1', MODE_KEY = 'brambleton-sudoku-mode';
+  const MODES = ['auto', 'night', 'day'], MODE_LABEL = { auto: 'Auto', night: 'Night', day: 'Day' };
+  let mode = 'auto';
+  try { mode = localStorage.getItem(MODE_KEY) || 'auto'; } catch (e) {}
+  if (!MODES.includes(mode)) mode = 'auto';
+  function applyMode() {
+    if (mode === 'auto') document.documentElement.removeAttribute('data-mode');
+    else document.documentElement.setAttribute('data-mode', mode);
+    document.getElementById('mode-label').textContent = MODE_LABEL[mode];
+  }
   const $ = id => document.getElementById(id);
   const row = i => Math.floor(i / 9), col = i => i % 9, box = i => Math.floor(row(i) / 3) * 3 + Math.floor(col(i) / 3);
   const PEERS = Array.from({ length: 81 }, (_, i) => {
@@ -312,6 +323,12 @@ button:active:not(:disabled) { transform: translateY(1px); }
   $('erase').addEventListener('click', erase);
   $('notes').addEventListener('click', () => { notesMode = !notesMode; render(); });
   $('hintbtn').addEventListener('click', hint);
+  $('mode').addEventListener('click', () => {
+    mode = MODES[(MODES.indexOf(mode) + 1) % MODES.length];
+    try { localStorage.setItem(MODE_KEY, mode); } catch (e) {}
+    applyMode();
+  });
+  applyMode();
 
   document.addEventListener('keydown', e => {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') { e.preventDefault(); return undo(); }
